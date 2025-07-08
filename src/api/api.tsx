@@ -28,3 +28,29 @@ export async function fetchLatestImages(limit = 6): Promise<UnsplashImage[]> {
     author: item.user.name,
   }));
 }
+
+export async function searchImages(
+  query: string,
+  limit = 6
+): Promise<UnsplashImage[]> {
+  const response = await fetch(
+    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${limit}`,
+    {
+      headers: {
+        Authorization: `Client-ID ${ACCESS_KEY}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to search images');
+  }
+
+  const data = await response.json();
+
+  return data.results.map((item: any) => ({
+    id: item.id,
+    imageUrl: item.urls.small,
+    author: item.user.name,
+  }));
+}
