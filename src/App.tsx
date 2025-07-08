@@ -3,13 +3,23 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import SearchBar from './components/SearchBar/SearchBar';
 import CardList from './components/CardList/CardList';
-import { fetchLatestImages } from './api/api';
+import { UnsplashImage, fetchLatestImages } from './api/api';
 
-class App extends Component {
+interface AppState {
+  images: UnsplashImage[];
+}
+
+class App extends Component<{}, AppState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      images: [],
+    };
+  }
   componentDidMount() {
     fetchLatestImages()
       .then((images) => {
-        console.log('Fetched images:', images);
+        this.setState({ images });
       })
       .catch((error) => {
         console.error('Error fetching images:', error);
@@ -23,7 +33,7 @@ class App extends Component {
 
         <main className="flex-grow p-6">
           <SearchBar />
-          <CardList />
+          <CardList items={this.state.images} />
         </main>
 
         <Footer />
