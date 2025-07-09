@@ -1,28 +1,27 @@
-const ACCESS_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY;
+import { BASE_URL, ACCESS_KEY } from './constants';
+import {
+  UnsplashApiPhoto,
+  UnsplashImage,
+  UnsplashSearchResponse,
+} from './types';
 
-export interface UnsplashImage {
-  id: string;
-  imageUrl: string;
-  author: string;
+async function handleResponse<T>(response: Response): Promise<T> {
+  if (!response.ok) {
+    throw new Error(`API error: ${response.status}`);
+  }
+  return response.json();
 }
 
 export async function fetchLatestImages(limit = 6): Promise<UnsplashImage[]> {
-  const response = await fetch(
-    `https://api.unsplash.com/photos?per_page=${limit}`,
-    {
-      headers: {
-        Authorization: `Client-ID ${ACCESS_KEY}`,
-      },
-    }
-  );
+  const response = await fetch(`${BASE_URL}/photos?per_page=${limit}`, {
+    headers: {
+      Authorization: `Client-ID ${ACCESS_KEY}`,
+    },
+  });
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch images');
-  }
+  const data = await handleResponse<UnsplashApiPhoto[]>(response);
 
-  const data = await response.json();
-
-  return data.map((item: any) => ({
+  return data.map((item) => ({
     id: item.id,
     imageUrl: item.urls.small,
     author: item.user.name,
@@ -34,7 +33,9 @@ export async function searchImages(
   limit = 6
 ): Promise<UnsplashImage[]> {
   const response = await fetch(
-    `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=${limit}`,
+    `${BASE_URL}/search/photos?query=${encodeURIComponent(
+      query
+    )}&per_page=${limit}`,
     {
       headers: {
         Authorization: `Client-ID ${ACCESS_KEY}`,
@@ -42,13 +43,9 @@ export async function searchImages(
     }
   );
 
-  if (!response.ok) {
-    throw new Error('Failed to search images');
-  }
+  const data = await handleResponse<UnsplashSearchResponse>(response);
 
-  const data = await response.json();
-
-  return data.results.map((item: any) => ({
+  return data.results.map((item) => ({
     id: item.id,
     imageUrl: item.urls.small,
     author: item.user.name,

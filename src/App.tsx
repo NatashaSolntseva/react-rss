@@ -4,7 +4,8 @@ import Footer from './components/Footer/Footer';
 import SearchBar from './components/SearchBar/SearchBar';
 import CardList from './components/CardList/CardList';
 import Loader from './components/Loader/Loader';
-import { UnsplashImage, fetchLatestImages, searchImages } from './api/api';
+import { fetchLatestImages, searchImages } from './api/api';
+import { UnsplashImage } from './api/types';
 
 interface AppState {
   images: UnsplashImage[];
@@ -51,7 +52,6 @@ class App extends Component<{}, AppState> {
 
         <main className="flex-grow p-6">
           <SearchBar onSearch={this.handleSearch} />
-
           <CardList items={this.state.images} />
         </main>
         {this.state.loading && <Loader />}

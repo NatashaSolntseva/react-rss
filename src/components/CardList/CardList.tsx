@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { UnsplashImage } from '../../api/api';
+import { UnsplashImage } from '../../api/types';
 
 interface Props {
   items: UnsplashImage[];
