@@ -22,14 +22,33 @@ class App extends Component<{}, AppState> {
       error: null,
     };
   }
+
   componentDidMount() {
-    fetchLatestImages()
-      .then((images) => {
-        this.setState({ images });
-      })
-      .catch((error) => {
-        console.error('Error fetching images:', error);
-      });
+    const savedTerm = localStorage.getItem('searchTerm');
+
+    if (savedTerm && savedTerm.trim()) {
+      this.setState({ loading: true });
+
+      searchImages(savedTerm.trim())
+        .then((images) => {
+          this.setState({ images, loading: false });
+        })
+        .catch((error) => {
+          console.error('Error fetching saved search:', error);
+          this.setState({ error: 'Failed to load images', loading: false });
+        });
+    } else {
+      this.setState({ loading: true });
+
+      fetchLatestImages()
+        .then((images) => {
+          this.setState({ images, loading: false });
+        })
+        .catch((error) => {
+          console.error('Error fetching images:', error);
+          this.setState({ error: 'Failed to load images', loading: false });
+        });
+    }
   }
 
   handleSearch = (term: string) => {
@@ -51,7 +70,10 @@ class App extends Component<{}, AppState> {
         <Header />
 
         <main className="flex-grow p-6">
-          <SearchBar onSearch={this.handleSearch} />
+          <SearchBar
+            onSearch={this.handleSearch}
+            initialValue={localStorage.getItem('searchTerm') || ''}
+          />
           <CardList items={this.state.images} />
         </main>
         {this.state.loading && <Loader />}

@@ -2,6 +2,7 @@ import { Component } from 'react';
 
 interface Props {
   onSearch: (term: string) => void;
+  initialValue?: string;
 }
 
 interface State {
@@ -12,7 +13,7 @@ class SearchBar extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      term: '',
+      term: props.initialValue || '',
     };
   }
 
