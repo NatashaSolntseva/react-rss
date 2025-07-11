@@ -64,7 +64,8 @@ class App extends Component<{}, AppState> {
       .catch((error) => {
         console.error('Search error:', error);
         this.setState({
-          error: 'Failed to fetch images. Please try again.',
+          error:
+            'Something went wrong while fetching images. Please try again later.',
           loading: false,
         });
       });
@@ -80,6 +81,11 @@ class App extends Component<{}, AppState> {
             onSearch={this.handleSearch}
             initialValue={localStorage.getItem('searchTerm') || ''}
           />
+          {this.state.error && (
+            <div className="text-center text-red-600 font-medium mb-4">
+              {this.state.error}
+            </div>
+          )}
           <CardList items={this.state.images} />
           <ThrowErrorButton />
         </main>
