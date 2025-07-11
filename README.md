@@ -9,8 +9,6 @@ The app allows users to search for images from the [Unsplash API](https://unspla
 
 🔗 [Demo](https://heroic-raindrop-383d50.netlify.app/)
 
----
-
 ## 🚀 Features
 
 - 🔍 Search photos by keyword

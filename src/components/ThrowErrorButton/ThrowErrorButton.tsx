@@ -4,8 +4,8 @@ interface State {
   isError: boolean;
 }
 
-class ThrowErrorButton extends Component<{}, State> {
-  constructor(props: {}) {
+class ThrowErrorButton extends Component<object, State> {
+  constructor(props: object) {
     super(props);
     this.state = {
       isError: false,
