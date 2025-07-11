@@ -1,69 +1,73 @@
-# React + TypeScript + Vite
+# 🖼️ Unsplash Image Search App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React app built with Vite, using class components, Tailwind CSS, ESLint, Prettier, and Husky.  
+The app allows users to search for images from the [Unsplash API](https://unsplash.com/documentation) and view the latest photos.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live Demo
 
-## Expanding the ESLint configuration
+🔗 [Demo](https://heroic-raindrop-383d50.netlify.app/)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🚀 Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- 🔍 Search photos by keyword
+- 🖼️ Display latest 6 photos on load
+- 💾 Store last search term in `localStorage`
+- 💥 Global error boundary with test error button
+- 🧹 Code quality tools: ESLint, Prettier, Husky
+- 💅 Styled with Tailwind CSS
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 🛠️ Tech Stack
+
+- React + TypeScript (class components)
+- Vite
+- Tailwind CSS
+- ESLint v9 + Prettier
+- Husky (pre-commit hook)
+- Unsplash REST API
+
+---
+
+## ⚙️ Project Setup
+
+### 1. Clone the repo
+
+```bash
+git clone git@github.com:NatashaSolntseva/react-rss.git
+cd react-rss
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+npm install
+```
+
+### 3. Set environment variables
+
+Create a .env file in the root:
+
+```
+VITE_UNSPLASH_ACCESS_KEY=your_access_key_here
+VITE_UNSPLASH_SECRET_KEY=your_secret_key_here
+```
+
+## 🧪 Available Commands
+
+```bash
+npm run dev         # Start dev server
+npm run build       # Production build
+npm run lint        # Run ESLint
+npm run format      # Run Prettier
+npm run format:fix  # Format and fix all files
+```
+
+## 🧯 Error Handling
+
+- All runtime rendering errors are caught by an ErrorBoundary
+- A special "Throw Error" button is available for testing error handling
