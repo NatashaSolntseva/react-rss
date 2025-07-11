@@ -23,9 +23,13 @@ class SearchBar extends Component<Props, State> {
 
   handleClick = () => {
     const trimmed = this.state.term.trim();
+
     if (trimmed) {
       this.props.onSearch(trimmed);
       localStorage.setItem('searchTerm', trimmed);
+    } else {
+      this.props.onSearch('');
+      localStorage.removeItem('searchTerm');
     }
   };
 

@@ -55,13 +55,18 @@ class App extends Component<{}, AppState> {
   handleSearch = (term: string) => {
     this.setState({ loading: true });
 
-    searchImages(term)
+    const fetchFn = term ? searchImages(term) : fetchLatestImages();
+
+    fetchFn
       .then((images) => {
-        this.setState({ images, loading: false });
+        this.setState({ images, loading: false, error: null });
       })
       .catch((error) => {
         console.error('Search error:', error);
-        this.setState({ error: 'Failed to search images', loading: false });
+        this.setState({
+          error: 'Failed to fetch images. Please try again.',
+          loading: false,
+        });
       });
   };
 
