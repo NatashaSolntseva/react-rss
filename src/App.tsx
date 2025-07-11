@@ -6,6 +6,7 @@ import CardList from './components/CardList/CardList';
 import Loader from './components/Loader/Loader';
 import { fetchLatestImages, searchImages } from './api/api';
 import { UnsplashImage } from './api/types';
+import ThrowErrorButton from './components/ThrowErrorButton/ThrowErrorButton';
 
 interface AppState {
   images: UnsplashImage[];
@@ -75,6 +76,7 @@ class App extends Component<{}, AppState> {
             initialValue={localStorage.getItem('searchTerm') || ''}
           />
           <CardList items={this.state.images} />
+          <ThrowErrorButton />
         </main>
         {this.state.loading && <Loader />}
 
