@@ -1,6 +1,6 @@
-import { Component } from 'react';
+import React from 'react';
 
-class Header extends Component {
+export default class Header extends React.Component {
   render() {
     return (
       <header className="bg-slate-800 text-white p-4 shadow-md">
@@ -9,5 +9,3 @@ class Header extends Component {
     );
   }
 }
-
-export default Header;
