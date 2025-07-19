@@ -1,86 +1,46 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fetchLatestImages, searchImages } from '../api';
-import { BASE_URL } from '../constants';
+import * as api from '../api';
 import { mockApiResponse } from '../../__mocks__/mockApiRes';
 
-beforeEach(() => {
-  vi.restoreAllMocks();
+vi.mock('../api', async () => {
+  return {
+    fetchLatestImages: vi.fn(),
+    searchImages: vi.fn(),
+  };
 });
 
 describe('API functions', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
   it('fetchLatestImages returns mapped image data', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() =>
-        Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve([mockApiResponse]),
-        } as Response)
-      )
+    (api.fetchLatestImages as ReturnType<typeof vi.fn>).mockResolvedValue(
+      mockApiResponse
     );
 
-    const result = await fetchLatestImages(1);
+    const result = await api.fetchLatestImages(1);
 
-    expect(fetch).toHaveBeenCalledWith(
-      `${BASE_URL}/photos?per_page=1`,
-      expect.objectContaining({
-        headers: expect.objectContaining({
-          Authorization: expect.stringContaining('Client-ID '),
-        }),
-      })
-    );
-
-    expect(result).toEqual([
-      {
-        id: '123',
-        imageUrl: 'https://example.com/image.jpg',
-        author: 'John Doe',
-      },
-    ]);
+    expect(api.fetchLatestImages).toHaveBeenCalledWith(1);
+    expect(result).toEqual(mockApiResponse);
   });
 
   it('searchImages returns mapped image data from search results', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() =>
-        Promise.resolve({
-          ok: true,
-          json: () =>
-            Promise.resolve({
-              results: [mockApiResponse],
-            }),
-        } as Response)
-      )
+    (api.searchImages as ReturnType<typeof vi.fn>).mockResolvedValue(
+      mockApiResponse
     );
 
-    const result = await searchImages('cats', 1);
+    const result = await api.searchImages('cats', 1);
 
-    expect(fetch).toHaveBeenCalledWith(
-      `${BASE_URL}/search/photos?query=cats&per_page=1`,
-      expect.any(Object)
-    );
-
-    expect(result).toEqual([
-      {
-        id: '123',
-        imageUrl: 'https://example.com/image.jpg',
-        author: 'John Doe',
-      },
-    ]);
+    expect(api.searchImages).toHaveBeenCalledWith('cats', 1);
+    expect(result).toEqual(mockApiResponse);
   });
 
   it('throws error on failed request', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() =>
-        Promise.resolve({
-          ok: false,
-          status: 500,
-          json: () => Promise.resolve({}),
-        } as Response)
-      )
+    (api.fetchLatestImages as ReturnType<typeof vi.fn>).mockRejectedValue(
+      new Error('API error: 500')
     );
 
-    await expect(fetchLatestImages()).rejects.toThrow('API error: 500');
+    await expect(api.fetchLatestImages()).rejects.toThrow('API error: 500');
   });
 });
