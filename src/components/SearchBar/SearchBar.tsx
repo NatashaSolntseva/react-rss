@@ -1,57 +1,50 @@
-import { Component } from 'react';
+import { ChangeEvent } from 'react';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
 
 interface Props {
   onSearch: (term: string) => void;
   initialValue?: string;
 }
 
-interface State {
-  term: string;
-}
+const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
+  const [term, setTerm, removeTerm] = useLocalStorage(
+    'searchTerm',
+    initialValue
+  );
 
-class SearchBar extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      term: props.initialValue || '',
-    };
-  }
-
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ term: e.target.value });
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTerm(e.target.value);
   };
 
-  handleClick = () => {
-    const trimmed = this.state.term.trim();
+  const handleClick = () => {
+    const trimmed = term.trim();
 
     if (trimmed) {
-      this.props.onSearch(trimmed);
-      localStorage.setItem('searchTerm', trimmed);
+      onSearch(trimmed);
+      setTerm(trimmed);
     } else {
-      this.props.onSearch('');
-      localStorage.removeItem('searchTerm');
+      onSearch('');
+      removeTerm();
     }
   };
 
-  render() {
-    return (
-      <div className="flex justify-center gap-2 mb-6">
-        <input
-          className="border rounded px-4 py-2 w-64"
-          type="text"
-          placeholder="Search for images..."
-          value={this.state.term}
-          onChange={this.handleChange}
-        />
-        <button
-          className="bg-slate-600 text-white px-4 py-2 rounded hover:bg-slate-700 cursor-pointer"
-          onClick={this.handleClick}
-        >
-          Search
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="flex justify-center gap-2 mb-6">
+      <input
+        className="border rounded px-4 py-2 w-64"
+        type="text"
+        placeholder="Search for images..."
+        value={term}
+        onChange={handleChange}
+      />
+      <button
+        className="bg-slate-600 text-white px-4 py-2 rounded hover:bg-slate-700 cursor-pointer"
+        onClick={handleClick}
+      >
+        Search
+      </button>
+    </div>
+  );
+};
 
 export default SearchBar;
