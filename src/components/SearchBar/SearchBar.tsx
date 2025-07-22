@@ -16,16 +16,21 @@ const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
     setTerm(e.target.value);
   };
 
-  const handleClick = () => {
+  const handleSearch = () => {
     const trimmed = term.trim();
 
     if (trimmed) {
-      onSearch(trimmed);
       setTerm(trimmed);
+      onSearch(trimmed);
     } else {
-      onSearch('');
-      removeTerm();
+      handleReset();
     }
+  };
+
+  const handleReset = () => {
+    removeTerm();
+    setTerm('');
+    onSearch('');
   };
 
   return (
@@ -39,9 +44,15 @@ const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
       />
       <button
         className="bg-slate-600 text-white px-4 py-2 rounded hover:bg-slate-700 cursor-pointer"
-        onClick={handleClick}
+        onClick={handleSearch}
       >
         Search
+      </button>
+      <button
+        className="bg-gray-300 text-slate-800 px-4 py-2 rounded hover:bg-gray-400 cursor-pointer"
+        onClick={handleReset}
+      >
+        Reset
       </button>
     </div>
   );
