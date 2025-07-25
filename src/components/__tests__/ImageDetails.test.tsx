@@ -1,21 +1,17 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi } from 'vitest';
+import * as api from '../../api/api';
 import ImageDetails from '../ImageDetails/ImageDetails';
+import { mockPhotoDetails } from '../../__mocks__/mockApiRes';
 
-vi.mock('../../api/api');
-
-// const mockData = {
-//   id: 'abc123',
-//   alt_description: 'Test image',
-//   urls: { small: 'small.jpg', full: 'full.jpg' },
-//   user: {
-//     name: 'John Doe',
-//     links: { html: 'https://unsplash.com/@johndoe' },
-//   },
-//   likes: 42,
-//   description: 'A nice image',
-// };
+vi.mock('../../api/api', async () => {
+  return {
+    fetchLatestImages: vi.fn(),
+    searchImages: vi.fn(),
+    fetchPhotoDetails: vi.fn(),
+  };
+});
 
 describe('ImageDetails component', () => {
   it('renders null if no detailsId in URL', () => {
@@ -27,61 +23,66 @@ describe('ImageDetails component', () => {
     expect(screen.queryByText('Image Details')).not.toBeInTheDocument();
   });
 
-  // it('shows loader and renders image details on success', async () => {
-  //   (api.fetchPhotoDetails as vi.Mock).mockResolvedValueOnce(mockData);
+  it('renders image details on success', async () => {
+    (api.fetchPhotoDetails as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
+      mockPhotoDetails
+    );
 
-  //   const initialEntries = ['/?details=abc123'];
-  //   render(
-  //     <MemoryRouter initialEntries={initialEntries}>
-  //       <ImageDetails />
-  //     </MemoryRouter>
-  //   );
+    const initialEntries = ['/?details=abc123'];
+    render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <ImageDetails />
+      </MemoryRouter>
+    );
 
-  //   expect(screen.getByRole('status')).toBeInTheDocument(); // Loader
+    await waitFor(() => {
+      expect(screen.getByText('Image Details')).toBeInTheDocument();
+    });
+  });
 
-  //   await waitFor(() => {
-  //     expect(screen.getByText('Image Details')).toBeInTheDocument();
-  //   });
+  it('shows error when image is not found (404)', async () => {
+    const error = new Error('API error: 404');
+    (api.fetchPhotoDetails as ReturnType<typeof vi.fn>).mockRejectedValueOnce(
+      error
+    );
 
-  //   expect(screen.getByText(/Author:/)).toHaveTextContent('John Doe');
-  //   expect(screen.getByText(/Likes:/)).toHaveTextContent('42');
-  //   expect(screen.getByText(/Description:/)).toHaveTextContent('A nice image');
-  // });
+    const consoleErrorMock = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
 
-  // it('shows error when image is not found (404)', async () => {
-  //   (api.fetchPhotoDetails as vi.Mock).mockRejectedValueOnce(
-  //     new Error('API error: 404')
-  //   );
+    const initialEntries = ['/?details=notfound'];
+    render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <ImageDetails />
+      </MemoryRouter>
+    );
 
-  //   const initialEntries = ['/?details=notfound'];
-  //   render(
-  //     <MemoryRouter initialEntries={initialEntries}>
-  //       <ImageDetails />
-  //     </MemoryRouter>
-  //   );
+    await waitFor(() => {
+      expect(screen.getByText(/Image not found/i)).toBeInTheDocument();
+    });
 
-  //   await waitFor(() => {
-  //     expect(screen.getByText(/Image not found/)).toBeInTheDocument();
-  //   });
-  // });
+    consoleErrorMock.mockRestore();
+  });
 
-  // it('calls handleClose on ✕ click', async () => {
-  //   (api.fetchPhotoDetails as vi.Mock).mockResolvedValueOnce(mockData);
+  it('calls handleClose on ✕ click', async () => {
+    (api.fetchPhotoDetails as ReturnType<typeof vi.fn>).mockResolvedValueOnce(
+      mockPhotoDetails
+    );
 
-  //   const initialEntries = ['/?details=abc123'];
-  //   render(
-  //     <MemoryRouter initialEntries={initialEntries}>
-  //       <ImageDetails />
-  //     </MemoryRouter>
-  //   );
+    const initialEntries = ['/?details=abc123'];
+    render(
+      <MemoryRouter initialEntries={initialEntries}>
+        <ImageDetails />
+      </MemoryRouter>
+    );
 
-  //   await screen.findByText('✕');
+    await screen.findByText('✕');
 
-  //   const closeBtn = screen.getByText('✕');
-  //   fireEvent.click(closeBtn);
+    const closeBtn = screen.getByText('✕');
+    fireEvent.click(closeBtn);
 
-  //   await waitFor(() => {
-  //     expect(window.location.search).not.toContain('details');
-  //   });
-  // });
+    await waitFor(() => {
+      expect(window.location.search).not.toContain('details');
+    });
+  });
 });

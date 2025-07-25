@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { fetchPhotoDetails } from '../../api/api';
 import { UnsplashImageDetails } from '../../api/types';
 import Loader from '../Loader/Loader';
+import HeaderWithCloseBtn from '../HeaderWithCloseBtn/HeaderWithCloseBtn';
 
 const ImageDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -56,30 +57,20 @@ const ImageDetails = () => {
       {loading && <Loader />}
       {!loading && error && (
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold">Image Details</h2>
-            <button
-              onClick={handleClose}
-              className="text-slate-500 hover:text-slate-800 cursor-pointer"
-            >
-              ✕
-            </button>
-          </div>
+          <HeaderWithCloseBtn
+            headerText="Image Details"
+            onClose={handleClose}
+          />
           <p className="text-red-600 font-medium">{error}</p>
         </div>
       )}
 
       {!loading && details && (
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold">Image Details</h2>
-            <button
-              onClick={handleClose}
-              className="text-slate-500 hover:text-slate-800 cursor-pointer"
-            >
-              ✕
-            </button>
-          </div>
+          <HeaderWithCloseBtn
+            headerText="Image Details"
+            onClose={handleClose}
+          />
 
           <Link
             to={details.urls.full}

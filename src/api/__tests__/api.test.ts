@@ -1,58 +1,107 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import * as api from '../api';
+import { fetchLatestImages, searchImages, fetchPhotoDetails } from '../api';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mockApiResponse, mockPhotoDetails } from '../../__mocks__/mockApiRes';
 
-vi.mock('../api', async () => {
-  return {
-    fetchLatestImages: vi.fn(),
-    searchImages: vi.fn(),
-    fetchPhotoDetails: vi.fn(),
-  };
-});
+const mockFetch = vi.fn();
+vi.stubGlobal('fetch', mockFetch);
 
-describe('API functions', () => {
-  beforeEach(() => {
+describe('Unsplash API', () => {
+  afterEach(() => {
     vi.resetAllMocks();
   });
 
-  it('fetchLatestImages returns mapped image data', async () => {
-    (api.fetchLatestImages as ReturnType<typeof vi.fn>).mockResolvedValue(
-      mockApiResponse
-    );
+  describe('fetchLatestImages', () => {
+    it('calls the correct URL and returns mapped images', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockApiResponse),
+      });
 
-    const result = await api.fetchLatestImages(1);
+      const result = await fetchLatestImages(2, 3);
 
-    expect(api.fetchLatestImages).toHaveBeenCalledWith(1);
-    expect(result).toEqual(mockApiResponse);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/photos?page=2&per_page=3'),
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: expect.stringContaining('Client-ID'),
+          }),
+        })
+      );
+
+      expect(result).toEqual([
+        {
+          id: mockApiResponse[0].id,
+          imageUrl: mockApiResponse[0].urls.small,
+          author: mockApiResponse[0].user.name,
+        },
+      ]);
+    });
+
+    it('throws an error if response is not ok', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 500,
+        statusText: 'Server Error',
+      });
+
+      await expect(fetchLatestImages()).rejects.toThrow('API error: 500');
+    });
   });
 
-  it('searchImages returns mapped image data from search results', async () => {
-    (api.searchImages as ReturnType<typeof vi.fn>).mockResolvedValue(
-      mockApiResponse
-    );
+  describe('searchImages', () => {
+    it('calls the search endpoint with query and returns mapped images', async () => {
+      const query = 'mountains';
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve({ results: mockApiResponse }),
+      });
 
-    const result = await api.searchImages('cats', 1);
+      const result = await searchImages(query, 1, 5);
 
-    expect(api.searchImages).toHaveBeenCalledWith('cats', 1);
-    expect(result).toEqual(mockApiResponse);
+      const calledUrl = mockFetch.mock.calls[0][0];
+      expect(calledUrl).toContain('/search/photos');
+      expect(calledUrl).toContain(`query=${encodeURIComponent(query)}`);
+
+      expect(result[0].id).toBe(mockApiResponse[0].id);
+    });
+
+    it('throws an error if search request fails', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 403,
+        statusText: 'Forbidden',
+      });
+
+      await expect(searchImages('test')).rejects.toThrow('API error: 403');
+    });
   });
 
-  it('fetchPhotoDetails returns full photo data', async () => {
-    (api.fetchPhotoDetails as ReturnType<typeof vi.fn>).mockResolvedValue(
-      mockPhotoDetails
-    );
+  describe('fetchPhotoDetails', () => {
+    it('returns photo details on success', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockPhotoDetails),
+      });
 
-    const result = await api.fetchPhotoDetails('abc123');
+      const result = await fetchPhotoDetails('abc123');
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringContaining('/photos/abc123'),
+        expect.any(Object)
+      );
+      expect(result).toEqual(mockPhotoDetails);
+    });
 
-    expect(api.fetchPhotoDetails).toHaveBeenCalledWith('abc123');
-    expect(result).toEqual(mockPhotoDetails);
-  });
+    it('throws error if details fetch fails', async () => {
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+      });
 
-  it('throws error on failed request', async () => {
-    (api.fetchLatestImages as ReturnType<typeof vi.fn>).mockRejectedValue(
-      new Error('API error: 500')
-    );
-
-    await expect(api.fetchLatestImages()).rejects.toThrow('API error: 500');
+      await expect(fetchPhotoDetails('badid')).rejects.toThrow(
+        'API error: 404'
+      );
+    });
   });
 });
