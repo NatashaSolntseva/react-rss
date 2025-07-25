@@ -2,6 +2,7 @@ import { BASE_URL, ACCESS_KEY } from './constants';
 import {
   UnsplashApiPhoto,
   UnsplashImage,
+  UnsplashImageDetails,
   UnsplashSearchResponse,
 } from './types';
 
@@ -57,4 +58,16 @@ export async function searchImages(
     imageUrl: item.urls.small,
     author: item.user.name,
   }));
+}
+
+export async function fetchPhotoDetails(
+  id: string
+): Promise<UnsplashImageDetails> {
+  const response = await fetch(`${BASE_URL}/photos/${id}`, {
+    headers: {
+      Authorization: `Client-ID ${ACCESS_KEY}`,
+    },
+  });
+
+  return handleResponse<UnsplashImageDetails>(response);
 }

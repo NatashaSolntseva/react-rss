@@ -1,11 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as api from '../api';
-import { mockApiResponse } from '../../__mocks__/mockApiRes';
+import { mockApiResponse, mockPhotoDetails } from '../../__mocks__/mockApiRes';
 
 vi.mock('../api', async () => {
   return {
     fetchLatestImages: vi.fn(),
     searchImages: vi.fn(),
+    fetchPhotoDetails: vi.fn(),
   };
 });
 
@@ -34,6 +35,17 @@ describe('API functions', () => {
 
     expect(api.searchImages).toHaveBeenCalledWith('cats', 1);
     expect(result).toEqual(mockApiResponse);
+  });
+
+  it('fetchPhotoDetails returns full photo data', async () => {
+    (api.fetchPhotoDetails as ReturnType<typeof vi.fn>).mockResolvedValue(
+      mockPhotoDetails
+    );
+
+    const result = await api.fetchPhotoDetails('abc123');
+
+    expect(api.fetchPhotoDetails).toHaveBeenCalledWith('abc123');
+    expect(result).toEqual(mockPhotoDetails);
   });
 
   it('throws error on failed request', async () => {

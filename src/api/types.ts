@@ -23,3 +23,23 @@ export interface UnsplashSearchResponse {
   total_pages: number;
   results: UnsplashApiPhoto[];
 }
+
+export interface UnsplashImageDetails {
+  id: string;
+  description: string | null;
+  alt_description: string | null;
+  urls: {
+    full: string;
+    regular: string;
+    small: string;
+  };
+  user: {
+    name: string;
+    portfolio_url: string;
+    links: {
+      html: string;
+    };
+  };
+  likes: number;
+  created_at: string;
+}
