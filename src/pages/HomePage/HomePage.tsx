@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CardList from '../../components/CardList/CardList';
 import Loader from '../../components/Loader/Loader';
-import ThrowErrorButton from '../../components/ThrowErrorButton/ThrowErrorButton';
+
 import { fetchLatestImages, searchImages } from '../../api/api';
 import { UnsplashImage } from '../../api/types';
 import ImageDetails from '../../components/ImageDetails/ImageDetails';
@@ -106,7 +106,6 @@ const HomePage = () => {
         </button>
       </div>
 
-      <ThrowErrorButton />
       {loading && <Loader />}
     </main>
   );
