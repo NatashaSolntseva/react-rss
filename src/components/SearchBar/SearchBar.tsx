@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 interface Props {
   onSearch: (term: string) => void;

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { fetchPhotoDetails } from '../../api/api';
-import { UnsplashImageDetails } from '../../api/types';
-import Loader from '../Loader/Loader';
-import HeaderWithCloseBtn from '../HeaderWithCloseBtn/HeaderWithCloseBtn';
+import { fetchPhotoDetails } from '@/api/api';
+import { UnsplashImageDetails } from '@/api/types';
+import Loader from '@/components/Loader/Loader';
+import HeaderWithCloseBtn from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
 
 const ImageDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();

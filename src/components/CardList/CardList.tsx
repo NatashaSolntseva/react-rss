@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { UnsplashImage } from '../../api/types';
-import { useSearchParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
+
+import { UnsplashImage } from '@/api/types';
 
 interface Props {
   items: UnsplashImage[];

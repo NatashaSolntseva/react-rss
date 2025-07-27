@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import SearchBar from '../../components/SearchBar/SearchBar';
-import CardList from '../../components/CardList/CardList';
-import Loader from '../../components/Loader/Loader';
-import { fetchLatestImages, searchImages } from '../../api/api';
-import { UnsplashImage } from '../../api/types';
-import ImageDetails from '../../components/ImageDetails/ImageDetails';
+import SearchBar from '@/components/SearchBar/SearchBar';
+import CardList from '@/components/CardList/CardList';
+import Loader from '@/components/Loader/Loader';
+import { fetchLatestImages, searchImages } from '@/api/api';
+import { UnsplashImage } from '@/api/types';
+import ImageDetails from '@/components/ImageDetails/ImageDetails';
 
 const IMAGES_PER_PAGE = 6;
 
