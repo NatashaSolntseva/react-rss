@@ -82,6 +82,7 @@ const HomePage = () => {
             setSearchParams({
               page: String(page - 1),
               ...(searchTerm && { query: searchTerm }),
+              ...(selectedId && { details: selectedId }),
             })
           }
           disabled={page <= 1}
@@ -97,6 +98,7 @@ const HomePage = () => {
             setSearchParams({
               page: String(page + 1),
               ...(searchTerm && { query: searchTerm }),
+              ...(selectedId && { details: selectedId }),
             })
           }
           className="px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 cursor-pointer"
