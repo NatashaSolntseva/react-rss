@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CardList from '../../components/CardList/CardList';
 import Loader from '../../components/Loader/Loader';
-
 import { fetchLatestImages, searchImages } from '../../api/api';
 import { UnsplashImage } from '../../api/types';
 import ImageDetails from '../../components/ImageDetails/ImageDetails';
@@ -20,7 +19,7 @@ const HomePage = () => {
   const searchTerm = searchParams.get('query')?.trim() || '';
   const selectedId = searchParams.get('details');
 
-  const fetchImages = () => {
+  const fetchImages = useCallback(() => {
     setLoading(true);
 
     const fetchFn = searchTerm
@@ -38,11 +37,11 @@ const HomePage = () => {
         setError('Something went wrong while fetching images.');
         setLoading(false);
       });
-  };
+  }, [page, searchTerm]);
 
   useEffect(() => {
     fetchImages();
-  }, [page, searchTerm]);
+  }, [fetchImages]);
 
   const handleSearch = (term: string) => {
     if (term.trim()) {
@@ -55,7 +54,7 @@ const HomePage = () => {
   };
 
   return (
-    <main className="flex-grow p-6 bg-slate-100 min-h-[calc(100vh-64px-48px)]">
+    <div className="flex-grow bg-slate-100 min-h-[calc(100vh-64px-48px)]">
       <SearchBar onSearch={handleSearch} initialValue={searchTerm} />
 
       <div
@@ -107,7 +106,7 @@ const HomePage = () => {
       </div>
 
       {loading && <Loader />}
-    </main>
+    </div>
   );
 };
 
