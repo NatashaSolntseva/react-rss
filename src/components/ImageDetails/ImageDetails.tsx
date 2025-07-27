@@ -53,7 +53,7 @@ const ImageDetails = () => {
   if (!detailsId) return null;
 
   return (
-    <aside className="p-4 border-l border-slate-300 bg-white">
+    <aside className="p-4 border-l border-slate-300 bg-white rounded ">
       {loading && <Loader />}
       {!loading && error && (
         <div>
@@ -81,7 +81,7 @@ const ImageDetails = () => {
             <img
               src={details.urls.small}
               alt={details.alt_description || ''}
-              className="rounded hover:opacity-90 transition"
+              className="rounded hover:opacity-80 transition"
             />
           </Link>
 

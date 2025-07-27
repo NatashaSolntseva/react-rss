@@ -54,7 +54,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex-grow bg-slate-100 min-h-[calc(100vh-64px-48px)]">
+    <div className="flex-grow bg-slate-100">
       <SearchBar onSearch={handleSearch} initialValue={searchTerm} />
 
       <div
