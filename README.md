@@ -1,7 +1,7 @@
 # 🖼️ Unsplash Image Search App
 
 A React app built with Vite, using class components, Tailwind CSS, ESLint, Prettier, and Husky.  
-The app allows users to search for images from the [Unsplash API](https://unsplash.com/documentation) and view the latest photos.
+The app allows users to search for images from the [Unsplash API](https://unsplash.com/documentation) and view the latest photos, and view photo details.
 
 ---
 
@@ -13,6 +13,8 @@ The app allows users to search for images from the [Unsplash API](https://unspla
 
 - 🔍 Search photos by keyword
 - 🖼️ Display latest 6 photos on load
+- 💬 View photo details including full-size image, author, likes, and description
+- 🔁 Pagination with Next/Previous buttons
 - 💾 Store last search term in `localStorage`
 - 💥 Global error boundary with test error button
 - 🧹 Code quality tools: ESLint, Prettier, Husky
@@ -27,6 +29,7 @@ The app allows users to search for images from the [Unsplash API](https://unspla
 - Tailwind CSS
 - ESLint v9 + Prettier
 - Husky (pre-commit hook)
+- Vitest + React Testing Library
 - Unsplash REST API
 
 ---
@@ -63,6 +66,8 @@ npm run build       # Production build
 npm run lint        # Run ESLint
 npm run format      # Run Prettier
 npm run format:fix  # Format and fix all files
+npm run test        # Run unit tests
+npm run test:coverage  # Run tests with coverage report
 ```
 
 ## 🧯 Error Handling

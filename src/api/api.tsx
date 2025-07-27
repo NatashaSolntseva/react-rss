@@ -2,6 +2,7 @@ import { BASE_URL, ACCESS_KEY } from './constants';
 import {
   UnsplashApiPhoto,
   UnsplashImage,
+  UnsplashImageDetails,
   UnsplashSearchResponse,
 } from './types';
 
@@ -12,12 +13,18 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json();
 }
 
-export async function fetchLatestImages(limit = 6): Promise<UnsplashImage[]> {
-  const response = await fetch(`${BASE_URL}/photos?per_page=${limit}`, {
-    headers: {
-      Authorization: `Client-ID ${ACCESS_KEY}`,
-    },
-  });
+export async function fetchLatestImages(
+  page = 1,
+  limit = 6
+): Promise<UnsplashImage[]> {
+  const response = await fetch(
+    `${BASE_URL}/photos?page=${page}&per_page=${limit}`,
+    {
+      headers: {
+        Authorization: `Client-ID ${ACCESS_KEY}`,
+      },
+    }
+  );
 
   const data = await handleResponse<UnsplashApiPhoto[]>(response);
 
@@ -30,12 +37,13 @@ export async function fetchLatestImages(limit = 6): Promise<UnsplashImage[]> {
 
 export async function searchImages(
   query: string,
+  page = 1,
   limit = 6
 ): Promise<UnsplashImage[]> {
   const response = await fetch(
     `${BASE_URL}/search/photos?query=${encodeURIComponent(
       query
-    )}&per_page=${limit}`,
+    )}&page=${page}&per_page=${limit}`,
     {
       headers: {
         Authorization: `Client-ID ${ACCESS_KEY}`,
@@ -50,4 +58,16 @@ export async function searchImages(
     imageUrl: item.urls.small,
     author: item.user.name,
   }));
+}
+
+export async function fetchPhotoDetails(
+  id: string
+): Promise<UnsplashImageDetails> {
+  const response = await fetch(`${BASE_URL}/photos/${id}`, {
+    headers: {
+      Authorization: `Client-ID ${ACCESS_KEY}`,
+    },
+  });
+
+  return handleResponse<UnsplashImageDetails>(response);
 }
