@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 
 const About = () => {
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-slate-100">
-      <h1 className="text-3xl font-bold mb-4 text-slate-800">
+    <div className="max-w-2xl mx-auto p-6 ">
+      <h1 className="text-3xl font-bold mb-4 text-slate-800 dark:text-gray-200 ">
         About Image Search App
       </h1>
 
-      <p className="mb-4 text-slate-700">
+      <p className="mb-4 text-slate-700 dark:text-gray-200">
         This application allows users to search and explore high-quality images
         using the{' '}
         <Link
@@ -22,7 +22,7 @@ const About = () => {
         interface.
       </p>
 
-      <p className="mb-4 text-slate-700">
+      <p className="mb-4 text-slate-700 dark:text-gray-200">
         Built as part of the&nbsp;
         <Link
           to="https://rs.school/courses/reactjs"
@@ -34,7 +34,7 @@ const About = () => {
         </Link>
       </p>
 
-      <p className="text-slate-600 italic">
+      <p className="text-slate-600 dark:text-gray-200 italic">
         Created by{' '}
         <Link
           to={'https://github.com/NatashaSolntseva'}

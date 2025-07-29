@@ -24,7 +24,7 @@ const CardList: FC<Props> = ({ items }) => {
           <Link
             key={item.id}
             to={`?${newParams.toString()}`}
-            className="bg-white rounded shadow overflow-hidden block hover:shadow-lg transition-all duration-300 hover:scale-[1.01]"
+            className="bg-white dark:bg-gray-800 rounded shadow overflow-hidden block hover:shadow-lg transition-all duration-300 hover:scale-[1.01]"
           >
             <img
               src={item.imageUrl}
@@ -32,7 +32,7 @@ const CardList: FC<Props> = ({ items }) => {
               className="w-full h-60 object-cover transition-transform duration-300 group-hover:scale-105"
             />
             <div className="p-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-100">
                 Photo by <strong>{item.author}</strong>
               </p>
             </div>

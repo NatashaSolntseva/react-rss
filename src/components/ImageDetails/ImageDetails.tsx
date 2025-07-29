@@ -53,7 +53,7 @@ const ImageDetails = () => {
   if (!detailsId) return null;
 
   return (
-    <aside className="p-4 border-l border-slate-300 bg-white rounded ">
+    <aside className="p-4 bg-white dark:bg-gray-800 rounded shadow overflow-hidden">
       {loading && <Loader />}
       {!loading && error && (
         <div>
@@ -85,7 +85,7 @@ const ImageDetails = () => {
             />
           </Link>
 
-          <p className="text-sm text-slate-600 mb-1">
+          <p className="text-sm text-slate-600 dark:text-gray-100 mb-1">
             <strong>Author:</strong>{' '}
             <Link
               to={details.user.links.html}
@@ -97,12 +97,12 @@ const ImageDetails = () => {
             </Link>
           </p>
 
-          <p className="text-sm text-slate-600 mb-1">
+          <p className="text-sm text-slate-600 dark:text-gray-100 mb-1">
             <strong>Likes:</strong> {details.likes}
           </p>
 
           {details.description && (
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-600 dark:text-gray-100">
               <strong>Description:</strong> {details.description}
             </p>
           )}

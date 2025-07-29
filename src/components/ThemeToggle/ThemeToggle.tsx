@@ -1,16 +1,14 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useTheme } from '@/app/theme/ThemeContext';
 
 const ThemeToggle: FC = () => {
-  const [isDark, setIsDark] = useState(false);
-
-  const handleToggle = () => {
-    setIsDark((prev) => !prev);
-  };
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
     <div
-      onClick={handleToggle}
-      className={`relative w-16 h-7 rounded-full flex items-center px-0.5 cursor-pointer transition-colors duration-300 ${
+      onClick={toggleTheme}
+      className={`relative w-18 h-6 rounded-full flex items-center px-1 cursor-pointer transition-colors duration-300 ${
         isDark ? 'bg-slate-800 justify-start' : 'bg-gray-300 justify-end'
       }`}
     >

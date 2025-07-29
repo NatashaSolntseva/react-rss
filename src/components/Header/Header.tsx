@@ -5,8 +5,8 @@ import ThemeToggle from '@/components/ThemeToggle/ThemeToggle';
 
 const Header: FC = () => {
   return (
-    <header className="bg-slate-800 text-white p-4 flex items-center justify-between">
-      <Link to="/" className="text-xl font-bold">
+    <header className="bg-slate-800 dark:bg-gray-950 text-white dark:text-gray-100 py-4 px-6 flex items-center justify-between  ">
+      <Link to="/" className="text-xl font-bold text-white dark:text-gray-100">
         Image Search App
       </Link>
 

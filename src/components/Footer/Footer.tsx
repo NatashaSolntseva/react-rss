@@ -4,7 +4,7 @@ import logo from '@/assets/logo-rsschool3.png';
 
 const Footer: FC = () => {
   return (
-    <footer className="bg-slate-800 text-white py-4 px-6 text-sm flex items-center justify-between flex-wrap gap-2">
+    <footer className="bg-slate-800 dark:bg-gray-950 text-white dark:text-gray-100 py-4 px-6 text-sm flex items-center justify-between flex-wrap gap-2">
       <Link
         to={'https://github.com/NatashaSolntseva'}
         target="_blank"
@@ -22,7 +22,7 @@ const Footer: FC = () => {
         rel="noopener noreferrer"
         className="ml-auto"
       >
-        <img src={logo} alt="RS School" className="h-6 dark:invert" />
+        <img src={logo} alt="RS School" className="h-6 invert" />
       </Link>
     </footer>
   );

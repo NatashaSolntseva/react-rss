@@ -54,7 +54,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="flex-grow bg-slate-100">
+    <div className="flex-grow">
       <SearchBar onSearch={handleSearch} initialValue={searchTerm} />
 
       <div
@@ -91,7 +91,9 @@ const HomePage = () => {
           Previous
         </button>
 
-        <span className="text-slate-700 font-medium px-2">Page {page}</span>
+        <span className="text-slate-700 dark:text-gray-100 font-medium px-2">
+          Page {page}
+        </span>
 
         <button
           onClick={() =>
