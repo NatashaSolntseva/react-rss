@@ -6,7 +6,7 @@ interface Props {
   initialValue?: string;
 }
 
-const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
+export const SearchBar = ({ onSearch, initialValue = '' }: Props) => {
   const [term, setTerm, removeTerm] = useLocalStorage(
     'searchTerm',
     initialValue
@@ -59,5 +59,3 @@ const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
     </div>
   );
 };
-
-export default SearchBar;

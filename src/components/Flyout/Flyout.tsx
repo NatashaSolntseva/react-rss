@@ -1,15 +1,26 @@
-import { FC } from 'react';
+import { useMemo } from 'react';
 import { useSelectionStore } from '@/app/store/selectionStore';
+import type { CardItem } from '@/api/types';
+import { downloadCsv } from '@/utils/downloadCsv';
 
-const Flyout: FC = () => {
+export const Flyout = () => {
   const selectedIds = useSelectionStore((state) => state.selectedIds);
+  const selectedItemsMap = useSelectionStore((state) => state.selectedItemsMap);
   const clearSelection = useSelectionStore((state) => state.clearSelection);
 
-  if (selectedIds.length === 0) return null;
+  const selectedItems: CardItem[] = useMemo(
+    () =>
+      selectedIds
+        .map((id) => selectedItemsMap[id])
+        .filter((item): item is CardItem => Boolean(item)),
+    [selectedIds, selectedItemsMap]
+  );
 
   const handleDownload = () => {
-    console.log('Download clicked with:', selectedIds);
+    downloadCsv(selectedItems);
   };
+
+  if (selectedIds.length === 0) return null;
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-white dark:bg-gray-800 text-black dark:text-white border border-gray-300 dark:border-gray-700 shadow-lg rounded px-6 py-3 flex items-center gap-4 z-50">
@@ -31,5 +42,3 @@ const Flyout: FC = () => {
     </div>
   );
 };
-
-export default Flyout;

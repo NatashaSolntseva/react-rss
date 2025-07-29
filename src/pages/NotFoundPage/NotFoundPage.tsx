@@ -1,4 +1,4 @@
-const NotFoundPage = () => {
+export const NotFoundPage = () => {
   return (
     <div className="text-center py-10">
       <h1 className="text-4xl font-bold text-slate-800 mb-4">
@@ -10,5 +10,3 @@ const NotFoundPage = () => {
     </div>
   );
 };
-
-export default NotFoundPage;

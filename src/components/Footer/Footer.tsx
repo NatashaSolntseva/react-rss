@@ -1,8 +1,7 @@
-import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/logo-rsschool3.png';
 
-const Footer: FC = () => {
+export const Footer = () => {
   return (
     <footer className="bg-slate-800 dark:bg-gray-950 text-white dark:text-gray-100 py-4 px-6 text-sm flex items-center justify-between flex-wrap gap-2">
       <Link
@@ -27,5 +26,3 @@ const Footer: FC = () => {
     </footer>
   );
 };
-
-export default Footer;

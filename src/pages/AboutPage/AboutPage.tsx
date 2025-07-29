@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const About = () => {
+export const AboutPage = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 ">
       <h1 className="text-3xl font-bold mb-4 text-slate-800 dark:text-gray-200 ">
@@ -48,5 +48,3 @@ const About = () => {
     </div>
   );
 };
-
-export default About;

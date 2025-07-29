@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { fetchPhotoDetails } from '@/api/api';
 import { UnsplashImageDetails } from '@/api/types';
-import Loader from '@/components/Loader/Loader';
+import { Loader } from '@/components/Loader/Loader';
 import HeaderWithCloseBtn from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
 
-const ImageDetails = () => {
+export const ImageDetails = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const detailsId = searchParams.get('details');
   const [details, setDetails] = useState<UnsplashImageDetails | null>(null);
@@ -111,5 +111,3 @@ const ImageDetails = () => {
     </aside>
   );
 };
-
-export default ImageDetails;

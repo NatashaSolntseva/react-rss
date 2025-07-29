@@ -1,11 +1,9 @@
-import { FC } from 'react';
-
 interface Props {
   onClose: () => void;
   headerText: string;
 }
 
-const HeaderWithCloseBtn: FC<Props> = ({ onClose, headerText }) => {
+const HeaderWithCloseBtn = ({ onClose, headerText }: Props) => {
   return (
     <div className="flex justify-between items-center mb-4">
       <h2 className="text-lg font-bold text-slate-600 dark:text-gray-100">

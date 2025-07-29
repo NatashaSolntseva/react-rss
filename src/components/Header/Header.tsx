@@ -1,9 +1,8 @@
-import { FC } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import ThemeToggle from '@/components/ThemeToggle/ThemeToggle';
 
-const Header: FC = () => {
+export const Header = () => {
   return (
     <header className="bg-slate-800 dark:bg-gray-950 text-white dark:text-gray-100 py-4 px-6 flex items-center justify-between  ">
       <Link to="/" className="text-xl font-bold text-white dark:text-gray-100">
@@ -32,5 +31,3 @@ const Header: FC = () => {
     </header>
   );
 };
-
-export default Header;

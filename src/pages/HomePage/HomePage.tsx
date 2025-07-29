@@ -1,17 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import SearchBar from '@/components/SearchBar/SearchBar';
-import { CardList } from '@/components/CardList/CardList';
-import Loader from '@/components/Loader/Loader';
+
 import { fetchLatestImages, searchImages } from '@/api/api';
-import { UnsplashImage } from '@/api/types';
-import ImageDetails from '@/components/ImageDetails/ImageDetails';
-import Flyout from '../../components/Flyout/Flyout';
+import type { CardItem } from '@/api/types';
+
+import { SearchBar } from '@/components/SearchBar/SearchBar';
+import { CardList } from '@/components/CardList/CardList';
+import { Loader } from '@/components/Loader/Loader';
+import { ImageDetails } from '@/components/ImageDetails/ImageDetails';
+import { Flyout } from '@/components/Flyout/Flyout';
 
 const IMAGES_PER_PAGE = 6;
 
-const HomePage = () => {
-  const [images, setImages] = useState<UnsplashImage[]>([]);
+export const HomePage = () => {
+  const [images, setImages] = useState<CardItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -115,5 +117,3 @@ const HomePage = () => {
     </div>
   );
 };
-
-export default HomePage;

@@ -1,23 +1,20 @@
-import { FC } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { useSelectionStore } from '@/app/store/selectionStore';
 
-import { UnsplashImage } from '@/api/types';
+import type { CardItem } from '@/api/types';
 
 interface Props {
-  items: UnsplashImage[];
+  items: CardItem[];
 }
 
-export const CardList: FC<Props> = ({ items }) => {
+export const CardList = ({ items }: Props) => {
   const [searchParams] = useSearchParams();
   const page = searchParams.get('page') || '1';
   const query = searchParams.get('query') || '';
 
-  const toggleSelected = useSelectionStore((state) => state.toggleSelected);
-  const isSelected = useSelectionStore((state) => state.isSelected);
   const selectedIds = useSelectionStore((state) => state.selectedIds);
-
-  console.log('selectedIds', selectedIds);
+  const toggleSelected = useSelectionStore((state) => state.toggleSelected);
+  const isSelected = (id: string) => selectedIds.includes(id);
 
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
@@ -35,7 +32,7 @@ export const CardList: FC<Props> = ({ items }) => {
             <Link to={`?${newParams.toString()}`}>
               <img
                 src={item.imageUrl}
-                alt={item.author}
+                alt={item.alt_description}
                 className="w-full h-60 object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
@@ -48,7 +45,7 @@ export const CardList: FC<Props> = ({ items }) => {
                 checked={isSelected(item.id)}
                 onChange={(e) => {
                   e.stopPropagation();
-                  toggleSelected(item.id);
+                  toggleSelected(item);
                 }}
                 className="w-4 h-4 accent-gray-800 dark:accent-gray-100 cursor-pointer"
               />
