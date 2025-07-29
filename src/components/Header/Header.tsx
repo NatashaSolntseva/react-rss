@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import ThemeToggle from '@/components/ThemeToggle/ThemeToggle';
+
 const Header: FC = () => {
   return (
     <header className="bg-slate-800 text-white p-4 flex items-center justify-between">
@@ -8,7 +10,7 @@ const Header: FC = () => {
         Image Search App
       </Link>
 
-      <nav className="flex gap-4 text-sm">
+      <nav className="flex gap-4 text-xl items-center">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -26,6 +28,7 @@ const Header: FC = () => {
           About
         </NavLink>
       </nav>
+      <ThemeToggle />
     </header>
   );
 };
