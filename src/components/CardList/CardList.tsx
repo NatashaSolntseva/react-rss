@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
+import { useSelectionStore } from '@/app/store/selectionStore';
 
 import { UnsplashImage } from '@/api/types';
 
@@ -12,17 +13,11 @@ export const CardList: FC<Props> = ({ items }) => {
   const page = searchParams.get('page') || '1';
   const query = searchParams.get('query') || '';
 
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const toggleSelected = useSelectionStore((state) => state.toggleSelected);
+  const isSelected = useSelectionStore((state) => state.isSelected);
+  const selectedIds = useSelectionStore((state) => state.selectedIds);
 
-  const toggleSelected = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
-    );
-  };
-
-  useEffect(() => {
-    console.log('Selected IDs:', selectedIds);
-  }, [selectedIds]);
+  console.log('selectedIds', selectedIds);
 
   return (
     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
@@ -50,8 +45,11 @@ export const CardList: FC<Props> = ({ items }) => {
               </p>
               <input
                 type="checkbox"
-                checked={selectedIds.includes(item.id)}
-                onChange={() => toggleSelected(item.id)}
+                checked={isSelected(item.id)}
+                onChange={(e) => {
+                  e.stopPropagation();
+                  toggleSelected(item.id);
+                }}
                 className="w-4 h-4 accent-gray-800 dark:accent-gray-100 cursor-pointer"
               />
             </div>

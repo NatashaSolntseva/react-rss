@@ -6,6 +6,7 @@ import Loader from '@/components/Loader/Loader';
 import { fetchLatestImages, searchImages } from '@/api/api';
 import { UnsplashImage } from '@/api/types';
 import ImageDetails from '@/components/ImageDetails/ImageDetails';
+import Flyout from '../../components/Flyout/Flyout';
 
 const IMAGES_PER_PAGE = 6;
 
@@ -110,6 +111,7 @@ const HomePage = () => {
       </div>
 
       {loading && <Loader />}
+      <Flyout />
     </div>
   );
 };
