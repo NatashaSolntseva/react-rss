@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 
-import Header from '../Header/Header';
+import { Header } from '@/components/Header/Header';
 import { describe, it, expect } from 'vitest';
-import { renderWithRouter } from '../../__tests__/renderWithRouter';
+import { renderWithRouter } from '@/__tests__/renderWithRouter';
 
 describe('Header', () => {
   it('renders the title', () => {

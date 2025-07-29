@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 
 import App from '@/app/App.tsx';
-import { ThemeProvider } from '@/app/theme/ThemeContext';
+import { ThemeProvider } from '@/app/theme/ThemeProvider';
+
 import ErrorBoundary from '@/components/ErrorBoundary/ErrorBoundary.tsx';
 
 const rootElement = document.getElementById('root');

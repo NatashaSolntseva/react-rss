@@ -1,9 +1,8 @@
 import { screen } from '@testing-library/react';
-
 import { describe, it, expect } from 'vitest';
 
-import { renderWithRouter } from '../../__tests__/renderWithRouter';
-import HomePage from '../HomePage/HomePage';
+import { renderWithRouter } from '@/__tests__/renderWithRouter';
+import { HomePage } from '@/pages//HomePage/HomePage';
 
 describe('HomePage', () => {
   it('renders search bar and pagination controls', () => {

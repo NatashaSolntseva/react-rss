@@ -1,9 +1,10 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect, vi } from 'vitest';
-import * as api from '../../api/api';
-import ImageDetails from '../ImageDetails/ImageDetails';
-import { mockPhotoDetails } from '../../__mocks__/mockApiRes';
+
+import * as api from '@/api/api';
+import { ImageDetails } from '@/components/ImageDetails/ImageDetails';
+import { mockPhotoDetails } from '@/api/__mocks__/mockApiRes';
 
 vi.mock('../../api/api', async () => {
   return {

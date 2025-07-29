@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import SearchBar from '../SearchBar/SearchBar';
 import { describe, it, beforeEach, vi, expect } from 'vitest';
+
+import { SearchBar } from '@/components/SearchBar/SearchBar';
 
 describe('SearchBar', () => {
   let onSearchMock: (term: string) => void;

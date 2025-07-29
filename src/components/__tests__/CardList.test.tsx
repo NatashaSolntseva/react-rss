@@ -1,29 +1,21 @@
 import { screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import CardList from '../CardList/CardList';
-import { UnsplashImage } from '../../api/types';
-import { renderWithRouterAndParams } from '../../__tests__/renderWithRouter';
+import { CardList } from '@/components/CardList/CardList';
 
-const mockItems: UnsplashImage[] = [
-  {
-    id: 'abc123',
-    imageUrl: 'https://example.com/image1.jpg',
-    author: 'Alice',
-  },
-  {
-    id: 'def456',
-    imageUrl: 'https://example.com/image2.jpg',
-    author: 'Bob',
-  },
-];
+import { renderWithRouterAndParams } from '@/__tests__/renderWithRouter';
+import { mockItems } from '@/components/__mocks__/mockCardList';
 
 describe('CardList', () => {
   it('renders cards with correct data and links', () => {
     renderWithRouterAndParams(<CardList items={mockItems} />);
 
-    expect(screen.getByAltText('Alice')).toBeInTheDocument();
-    expect(screen.getByAltText('Bob')).toBeInTheDocument();
+    expect(
+      screen.getByAltText('A beautiful sunrise over the mountains')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByAltText('A peaceful forest path in autumn')
+    ).toBeInTheDocument();
 
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(2);

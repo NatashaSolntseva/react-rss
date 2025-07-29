@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 
-import Footer from '../Footer/Footer';
-import { renderWithRouter } from '../../__tests__/renderWithRouter';
+import { Footer } from '@/components/Footer/Footer';
+import { renderWithRouter } from '@/__tests__/renderWithRouter';
 
 describe('Footer', () => {
   it('renders GitHub link', () => {

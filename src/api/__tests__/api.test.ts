@@ -1,6 +1,6 @@
 import { fetchLatestImages, searchImages, fetchPhotoDetails } from '../api';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { mockApiResponse, mockPhotoDetails } from '../../__mocks__/mockApiRes';
+import { mockApiResponse, mockPhotoDetails } from '@/api/__mocks__/mockApiRes';
 
 const mockFetch = vi.fn();
 vi.stubGlobal('fetch', mockFetch);
@@ -32,8 +32,13 @@ describe('Unsplash API', () => {
       expect(result).toEqual([
         {
           id: mockApiResponse[0].id,
+          createdAt: mockApiResponse[0].created_at,
           imageUrl: mockApiResponse[0].urls.small,
+          alt_description: mockApiResponse[0].alt_description,
           author: mockApiResponse[0].user.name,
+          likes: mockApiResponse[0].likes,
+          authorUrl: mockApiResponse[0].user.links.html,
+          description: mockApiResponse[0].description,
         },
       ]);
     });

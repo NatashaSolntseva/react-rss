@@ -1,9 +1,14 @@
 import { ReactElement } from 'react';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@/app/theme/ThemeProvider';
 
 export const renderWithRouter = (ui: ReactElement) => {
-  return render(<BrowserRouter>{ui}</BrowserRouter>);
+  return render(
+    <ThemeProvider>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </ThemeProvider>
+  );
 };
 
 export const renderWithRouterAndParams = (
@@ -11,5 +16,9 @@ export const renderWithRouterAndParams = (
   search = '?page=2&query=cat'
 ) => {
   window.history.pushState({}, 'Test page', search);
-  return render(<BrowserRouter>{ui}</BrowserRouter>);
+  return render(
+    <ThemeProvider>
+      <BrowserRouter>{ui}</BrowserRouter>
+    </ThemeProvider>
+  );
 };
