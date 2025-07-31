@@ -12,12 +12,16 @@ describe('SearchBar', () => {
   });
 
   it('renders with initialValue and updates input on typing', () => {
-    render(<SearchBar onSearch={onSearchMock} initialValue="cats" />);
-    const input = screen.getByPlaceholderText(/search for images/i);
-    expect(input).toHaveValue('cats');
+    const initialValue = 'cats';
+    const updatedValue = 'dogs';
 
-    fireEvent.change(input, { target: { value: 'dogs' } });
-    expect(input).toHaveValue('dogs');
+    render(<SearchBar onSearch={onSearchMock} initialValue={initialValue} />);
+    const input = screen.getByPlaceholderText(/search for images/i);
+
+    expect(input).toHaveValue(initialValue);
+
+    fireEvent.change(input, { target: { value: updatedValue } });
+    expect(input).toHaveValue(updatedValue);
   });
 
   it('calls onSearch and saves trimmed input to localStorage on button click', () => {

@@ -19,15 +19,14 @@ export const ImageDetails = () => {
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    const fetchDetails = async () => {
+      setLoading(true);
+      setError(null);
 
-    fetchPhotoDetails(detailsId)
-      .then((data) => {
+      try {
+        const data = await fetchPhotoDetails(detailsId);
         setDetails(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('Error loading details:', err);
 
         const is404 =
@@ -41,8 +40,12 @@ export const ImageDetails = () => {
         }
 
         setDetails(null);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchDetails();
   }, [detailsId]);
 
   const handleClose = () => {

@@ -43,9 +43,15 @@ export async function fetchLatestImages(
   page = 1,
   limit = 6
 ): Promise<CardItem[]> {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    per_page: limit.toString(),
+  });
+
   const data = await handleAxios(
-    api.get<UnsplashApiItem[]>(`/photos?page=${page}&per_page=${limit}`)
+    api.get<UnsplashApiItem[]>(`/photos?${params.toString()}`)
   );
+
   return data.map(toCardItem);
 }
 
@@ -54,11 +60,16 @@ export async function searchImages(
   page = 1,
   limit = 6
 ): Promise<CardItem[]> {
+  const params = new URLSearchParams({
+    query,
+    page: page.toString(),
+    per_page: limit.toString(),
+  });
+
   const data = await handleAxios(
-    api.get<UnsplashSearchResponse>(
-      `/search/photos?query=${encodeURIComponent(query)}&page=${page}&per_page=${limit}`
-    )
+    api.get<UnsplashSearchResponse>(`/search/photos?${params.toString()}`)
   );
+
   return data.results.map(toCardItem);
 }
 

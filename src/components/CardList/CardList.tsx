@@ -7,9 +7,11 @@ interface Props {
   items: CardItem[];
 }
 
+const DEFAULT_PAGE = '1';
+
 export const CardList = ({ items }: Props) => {
   const [searchParams] = useSearchParams();
-  const page = searchParams.get('page') || '1';
+  const page = searchParams.get('page') || DEFAULT_PAGE;
   const query = searchParams.get('query') || '';
 
   const selectedIds = useSelectionStore((state) => state.selectedIds);

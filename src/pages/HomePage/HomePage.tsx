@@ -18,28 +18,26 @@ export const HomePage = () => {
   const [error, setError] = useState<string | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const page = parseInt(searchParams.get('page') || '1', 10);
+  const page = Number(searchParams.get('page')) || 1;
   const searchTerm = searchParams.get('query')?.trim() || '';
   const selectedId = searchParams.get('details');
 
-  const fetchImages = useCallback(() => {
+  const fetchImages = useCallback(async () => {
     setLoading(true);
 
-    const fetchFn = searchTerm
-      ? searchImages(searchTerm, page, IMAGES_PER_PAGE)
-      : fetchLatestImages(page, IMAGES_PER_PAGE);
+    try {
+      const data = searchTerm
+        ? await searchImages(searchTerm, page, IMAGES_PER_PAGE)
+        : await fetchLatestImages(page, IMAGES_PER_PAGE);
 
-    fetchFn
-      .then((data) => {
-        setImages(data);
-        setError(null);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Image fetch error:', err);
-        setError('Something went wrong while fetching images.');
-        setLoading(false);
-      });
+      setImages(data);
+      setError(null);
+    } catch (err) {
+      console.error('Image fetch error:', err);
+      setError('Something went wrong while fetching images.');
+    } finally {
+      setLoading(false);
+    }
   }, [page, searchTerm]);
 
   useEffect(() => {
