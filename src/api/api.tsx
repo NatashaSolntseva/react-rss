@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { BASE_URL, ACCESS_KEY } from './constants';
 import type {
   CardItem,
@@ -6,29 +7,15 @@ import type {
   UnsplashSearchResponse,
 } from './types';
 
-async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
-  return response.json();
-}
+const api = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Authorization: `Client-ID ${ACCESS_KEY}`,
+  },
+});
 
-export async function fetchLatestImages(
-  page = 1,
-  limit = 6
-): Promise<CardItem[]> {
-  const response = await fetch(
-    `${BASE_URL}/photos?page=${page}&per_page=${limit}`,
-    {
-      headers: {
-        Authorization: `Client-ID ${ACCESS_KEY}`,
-      },
-    }
-  );
-
-  const data = await handleResponse<UnsplashApiItem[]>(response);
-
-  return data.map((item) => ({
+function toCardItem(item: UnsplashApiItem): CardItem {
+  return {
     id: item.id,
     createdAt: item.created_at,
     imageUrl: item.urls.small,
@@ -37,7 +24,29 @@ export async function fetchLatestImages(
     likes: item.likes,
     authorUrl: item.user.links.html,
     description: item.description,
-  }));
+  };
+}
+
+async function handleAxios<T>(promise: Promise<{ data: T }>): Promise<T> {
+  try {
+    const response = await promise;
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(`API error: ${error.response?.status}`);
+    }
+    throw error;
+  }
+}
+
+export async function fetchLatestImages(
+  page = 1,
+  limit = 6
+): Promise<CardItem[]> {
+  const data = await handleAxios(
+    api.get<UnsplashApiItem[]>(`/photos?page=${page}&per_page=${limit}`)
+  );
+  return data.map(toCardItem);
 }
 
 export async function searchImages(
@@ -45,37 +54,16 @@ export async function searchImages(
   page = 1,
   limit = 6
 ): Promise<CardItem[]> {
-  const response = await fetch(
-    `${BASE_URL}/search/photos?query=${encodeURIComponent(query)}&page=${page}&per_page=${limit}`,
-    {
-      headers: {
-        Authorization: `Client-ID ${ACCESS_KEY}`,
-      },
-    }
+  const data = await handleAxios(
+    api.get<UnsplashSearchResponse>(
+      `/search/photos?query=${encodeURIComponent(query)}&page=${page}&per_page=${limit}`
+    )
   );
-
-  const data = await handleResponse<UnsplashSearchResponse>(response);
-
-  return data.results.map((item) => ({
-    id: item.id,
-    createdAt: item.created_at,
-    imageUrl: item.urls.small,
-    alt_description: item.alt_description,
-    author: item.user.name,
-    likes: item.likes,
-    authorUrl: item.user.links.html,
-    description: item.description,
-  }));
+  return data.results.map(toCardItem);
 }
 
 export async function fetchPhotoDetails(
   id: string
 ): Promise<UnsplashImageDetails> {
-  const response = await fetch(`${BASE_URL}/photos/${id}`, {
-    headers: {
-      Authorization: `Client-ID ${ACCESS_KEY}`,
-    },
-  });
-
-  return handleResponse<UnsplashImageDetails>(response);
+  return handleAxios(api.get<UnsplashImageDetails>(`/photos/${id}`));
 }
