@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, KeyboardEvent } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 interface Props {
@@ -14,6 +14,12 @@ export const SearchBar = ({ onSearch, initialValue = '' }: Props) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTerm(e.target.value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   const handleSearch = () => {
@@ -41,6 +47,7 @@ export const SearchBar = ({ onSearch, initialValue = '' }: Props) => {
         placeholder="Search for images..."
         value={term}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
       />
 
       <div className="flex gap-2 mt-2 sm:mt-0">
