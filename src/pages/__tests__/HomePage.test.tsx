@@ -99,7 +99,6 @@ describe('HomePage', () => {
     (router.useNavigate as unknown as Mock).mockReturnValue(navigateMock);
 
     renderWithRouterAndParams(<HomePage />, { route: '/2', path: '/:page' });
-    screen.debug();
 
     const nextButton = screen.getByTestId('next-btn');
     fireEvent.click(nextButton);
