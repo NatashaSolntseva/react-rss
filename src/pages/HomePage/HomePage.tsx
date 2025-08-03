@@ -28,7 +28,7 @@ export const HomePage = () => {
       pageNumber > 0 &&
       pageParam === pageNumber.toString());
 
-  const isIdValid = !idParam || /^[a-zA-Z0-9]{11}$/.test(idParam);
+  const isIdValid = !idParam || /^[\w-]{10,}$/.test(idParam);
 
   useEffect(() => {
     if (!isPageValid || !isIdValid) {
