@@ -1,33 +1,35 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchPhotoDetails } from '@/api/api';
 import { UnsplashImageDetails } from '@/api/types';
-import Loader from '@/components/Loader/Loader';
-import HeaderWithCloseBtn from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
+import { Loader } from '@/components/Loader/Loader';
+import { HeaderWithCloseBtn } from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
+import { DEFAULT_PAGE } from '@/api/constants';
 
-const ImageDetails = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const detailsId = searchParams.get('details');
+export const ImageDetails = () => {
+  const { id, page: pageParam } = useParams();
+  const navigate = useNavigate();
+  const page = Number(pageParam) || Number(DEFAULT_PAGE);
+
   const [details, setDetails] = useState<UnsplashImageDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!detailsId) {
+    if (!id) {
       setDetails(null);
       setError(null);
       return;
     }
 
-    setLoading(true);
-    setError(null);
+    const fetchDetails = async () => {
+      setLoading(true);
+      setError(null);
 
-    fetchPhotoDetails(detailsId)
-      .then((data) => {
+      try {
+        const data = await fetchPhotoDetails(id);
         setDetails(data);
-        setLoading(false);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.error('Error loading details:', err);
 
         const is404 =
@@ -35,26 +37,30 @@ const ImageDetails = () => {
           (err.message.includes('404') || err.message === 'API error: 404');
 
         if (is404) {
-          setError(`Image not found (ID: ${detailsId})`);
+          setError(`Image not found (ID: ${id})`);
         } else {
           setError('Error fetching image details');
         }
 
         setDetails(null);
+      } finally {
         setLoading(false);
-      });
-  }, [detailsId]);
+      }
+    };
+
+    fetchDetails();
+  }, [id]);
 
   const handleClose = () => {
-    searchParams.delete('details');
-    setSearchParams(searchParams);
+    navigate(`/${page}`);
   };
 
-  if (!detailsId) return null;
+  if (!id) return null;
 
   return (
-    <aside className="p-4 border-l border-slate-300 bg-white rounded ">
+    <aside className="p-4 bg-white dark:bg-gray-800 rounded shadow overflow-hidden">
       {loading && <Loader />}
+
       {!loading && error && (
         <div>
           <HeaderWithCloseBtn
@@ -85,7 +91,7 @@ const ImageDetails = () => {
             />
           </Link>
 
-          <p className="text-sm text-slate-600 mb-1">
+          <p className="text-sm text-slate-600 dark:text-gray-100 mb-1">
             <strong>Author:</strong>{' '}
             <Link
               to={details.user.links.html}
@@ -97,12 +103,12 @@ const ImageDetails = () => {
             </Link>
           </p>
 
-          <p className="text-sm text-slate-600 mb-1">
+          <p className="text-sm text-slate-600 dark:text-gray-100 mb-1">
             <strong>Likes:</strong> {details.likes}
           </p>
 
           {details.description && (
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-slate-600 dark:text-gray-100">
               <strong>Description:</strong> {details.description}
             </p>
           )}
@@ -111,5 +117,3 @@ const ImageDetails = () => {
     </aside>
   );
 };
-
-export default ImageDetails;

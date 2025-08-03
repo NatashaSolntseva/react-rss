@@ -1,18 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import About from '../AboutPage/AboutPage';
+
+import { AboutPage } from '@/pages/AboutPage/AboutPage';
 
 describe('About page', () => {
   it('renders the heading and expected text', () => {
     render(
       <MemoryRouter>
-        <About />
+        <AboutPage />
       </MemoryRouter>
     );
 
     expect(
-      screen.getByRole('heading', { name: /About Image Search App/i })
+      screen.getByRole('heading', { name: /About Image Explorer/i })
     ).toBeInTheDocument();
 
     expect(
@@ -27,7 +28,7 @@ describe('About page', () => {
   it('contains all external links with correct hrefs', () => {
     render(
       <MemoryRouter>
-        <About />
+        <AboutPage />
       </MemoryRouter>
     );
 

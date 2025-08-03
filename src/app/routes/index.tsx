@@ -1,19 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from '../../pages/HomePage/HomePage';
-import About from '../../pages/AboutPage/AboutPage';
-import Layout from '../../components/Layout/Layout';
-import NotFound from '../../pages/NotFoundPage/NotFoundPage';
 
-const AppRoutes = () => {
+import { Layout } from '@/components/Layout/Layout';
+import { HomePage } from '@/pages/HomePage/HomePage';
+import { AboutPage } from '@/pages/AboutPage/AboutPage';
+import { NotFoundPage } from '@/pages/NotFoundPage/NotFoundPage';
+import { ImageDetails } from '@/components/ImageDetails/ImageDetails';
+
+export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="*" element={<NotFound />} />
+        <Route index element={<HomePage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path=":page" element={<HomePage />}>
+          <Route path=":id" element={<ImageDetails />} />
+        </Route>
+        <Route path="404-not-found" element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );
 };
-
-export default AppRoutes;

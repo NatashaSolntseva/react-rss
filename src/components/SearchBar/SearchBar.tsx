@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, KeyboardEvent } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 interface Props {
@@ -6,7 +6,7 @@ interface Props {
   initialValue?: string;
 }
 
-const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
+export const SearchBar = ({ onSearch, initialValue = '' }: Props) => {
   const [term, setTerm, removeTerm] = useLocalStorage(
     'searchTerm',
     initialValue
@@ -14,6 +14,12 @@ const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTerm(e.target.value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   const handleSearch = () => {
@@ -34,28 +40,31 @@ const SearchBar: React.FC<Props> = ({ onSearch, initialValue = '' }) => {
   };
 
   return (
-    <div className="flex justify-center gap-2 mb-6">
+    <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mb-6">
       <input
-        className="border rounded px-4 py-2 w-64"
+        className="border rounded px-4 py-2 w-64 bg-white text-black dark:bg-gray-800 dark:text-white dark:border-gray-600 focus:outline-none"
         type="text"
         placeholder="Search for images..."
         value={term}
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
       />
-      <button
-        className="bg-slate-600 text-white px-4 py-2 rounded hover:bg-slate-700 cursor-pointer"
-        onClick={handleSearch}
-      >
-        Search
-      </button>
-      <button
-        className="bg-gray-300 text-slate-800 px-4 py-2 rounded hover:bg-gray-400 cursor-pointer"
-        onClick={handleReset}
-      >
-        Reset
-      </button>
+
+      <div className="flex gap-2 mt-2 sm:mt-0">
+        <button
+          className="bg-slate-600 text-white px-4 py-2 rounded hover:bg-slate-700 cursor-pointer"
+          onClick={handleSearch}
+        >
+          Search
+        </button>
+
+        <button
+          className="bg-gray-300 text-slate-800 px-4 py-2 rounded hover:bg-gray-400 cursor-pointer dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
+          onClick={handleReset}
+        >
+          Reset
+        </button>
+      </div>
     </div>
   );
 };
-
-export default SearchBar;

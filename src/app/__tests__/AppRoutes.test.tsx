@@ -1,15 +1,18 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-
 import { describe, it, expect } from 'vitest';
-import AppRoutes from '../routes';
 
-describe('App routes', () => {
-  it('renders HomePage by default', () => {
+import { AppRoutes } from '../routes';
+import { ThemeProvider } from '@/app/theme/ThemeProvider';
+
+describe('AppRoutes', () => {
+  it('renders HomePage on index route', () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <AppRoutes />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={['/1']}>
+          <AppRoutes />
+        </MemoryRouter>
+      </ThemeProvider>
     );
 
     expect(
@@ -17,23 +20,40 @@ describe('App routes', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders About page on /about', () => {
+  it('renders ImageDetails when ID param is provided', async () => {
     render(
-      <MemoryRouter initialEntries={['/about']}>
-        <AppRoutes />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={['/1/LBI7cgq3pbM']}>
+          <AppRoutes />
+        </MemoryRouter>
+      </ThemeProvider>
     );
 
-    expect(screen.getByText(/about image search app/i)).toBeInTheDocument();
+    expect(await screen.findByText(/image details/i)).toBeInTheDocument();
   });
 
-  it('renders NotFoundPage for unknown route', () => {
+  it('renders AboutPage on /about', () => {
     render(
-      <MemoryRouter initialEntries={['/wrong-route']}>
-        <AppRoutes />
-      </MemoryRouter>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={['/about']}>
+          <AppRoutes />
+        </MemoryRouter>
+      </ThemeProvider>
     );
 
-    expect(screen.getByText(/404 - page not found/i)).toBeInTheDocument();
+    expect(screen.getByText(/about image explorer/i)).toBeInTheDocument();
+  });
+
+  it('renders NotFoundPage for unknown route', async () => {
+    render(
+      <ThemeProvider>
+        <MemoryRouter initialEntries={['/nonexistent-route']}>
+          <AppRoutes />
+        </MemoryRouter>
+      </ThemeProvider>
+    );
+
+    const notFoundTitle = await screen.findByTestId('not-found-title');
+    expect(notFoundTitle).toHaveTextContent('404 - Page Not Found');
   });
 });

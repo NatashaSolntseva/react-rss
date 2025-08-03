@@ -13,6 +13,7 @@ export default defineConfig({
     },
   },
   test: {
+    reporters: ['verbose'],
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/__tests__/setupTests.ts',
@@ -24,8 +25,8 @@ export default defineConfig({
         'src/**/*.test.{js,jsx,ts,tsx}',
         'src/**/*.spec.{js,jsx,ts,tsx}',
         'src/index.{js,jsx,ts,tsx}',
-        'src/__tests__/*.{js,ts,tsx}',
-        'src/__mocks__/*.{js,ts}',
+        '**/__tests__/**',
+        '**/__mocks__/**',
         'src/**/*.d.ts',
         'src/**/*types.ts',
         'src/**/*constants.ts',

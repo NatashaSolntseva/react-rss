@@ -1,13 +1,15 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const About = () => {
+export const AboutPage = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-slate-100">
-      <h1 className="text-3xl font-bold mb-4 text-slate-800">
-        About Image Search App
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4 text-slate-800 dark:text-gray-200">
+        About Image Explorer
       </h1>
 
-      <p className="mb-4 text-slate-700">
+      <p className="mb-4 text-slate-700 dark:text-gray-200">
         This application allows users to search and explore high-quality images
         using the{' '}
         <Link
@@ -22,7 +24,7 @@ const About = () => {
         interface.
       </p>
 
-      <p className="mb-4 text-slate-700">
+      <p className="mb-4 text-slate-700 dark:text-gray-200">
         Built as part of the&nbsp;
         <Link
           to="https://rs.school/courses/reactjs"
@@ -34,7 +36,7 @@ const About = () => {
         </Link>
       </p>
 
-      <p className="text-slate-600 italic">
+      <p className="mb-6 text-slate-600 dark:text-gray-200 italic">
         Created by{' '}
         <Link
           to={'https://github.com/NatashaSolntseva'}
@@ -45,8 +47,12 @@ const About = () => {
           Natasha Solntseva
         </Link>
       </p>
+      <button
+        onClick={() => navigate(-1)}
+        className="cursor-pointer  px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 transition"
+      >
+        ← Назад
+      </button>
     </div>
   );
 };
-
-export default About;
