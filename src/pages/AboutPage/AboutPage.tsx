@@ -4,7 +4,7 @@ export const AboutPage = () => {
   return (
     <div className="max-w-2xl mx-auto p-6 ">
       <h1 className="text-3xl font-bold mb-4 text-slate-800 dark:text-gray-200 ">
-        About Image Search App
+        About Image Explorer
       </h1>
 
       <p className="mb-4 text-slate-700 dark:text-gray-200">

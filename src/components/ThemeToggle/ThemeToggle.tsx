@@ -1,6 +1,6 @@
 import { useTheme } from '@/hooks/useTheme';
 
-const ThemeToggle = () => {
+export const ThemeToggle = () => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -18,7 +18,7 @@ const ThemeToggle = () => {
       ></div>
 
       <span
-        className={`absolute text-[10px] font-medium transition-all duration-300 ${
+        className={`absolute text-[10px] font-medium transition-all duration-300 sm:text-[8px] ${
           isDark
             ? 'text-slate-100 left-8 opacity-100'
             : 'text-slate-800 left-2 opacity-100'
@@ -29,5 +29,3 @@ const ThemeToggle = () => {
     </div>
   );
 };
-
-export default ThemeToggle;

@@ -13,7 +13,7 @@ describe('About page', () => {
     );
 
     expect(
-      screen.getByRole('heading', { name: /About Image Search App/i })
+      screen.getByRole('heading', { name: /About Image Explorer/i })
     ).toBeInTheDocument();
 
     expect(

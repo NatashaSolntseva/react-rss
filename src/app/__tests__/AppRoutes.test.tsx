@@ -29,7 +29,7 @@ describe('App routes', () => {
       </ThemeProvider>
     );
 
-    expect(screen.getByText(/about image search app/i)).toBeInTheDocument();
+    expect(screen.getByText(/about image explorer/i)).toBeInTheDocument();
   });
 
   it('renders NotFoundPage for unknown route', () => {
