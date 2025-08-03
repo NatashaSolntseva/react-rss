@@ -3,7 +3,7 @@ interface Props {
   headerText: string;
 }
 
-const HeaderWithCloseBtn = ({ onClose, headerText }: Props) => {
+export const HeaderWithCloseBtn = ({ onClose, headerText }: Props) => {
   return (
     <div className="flex justify-between items-center mb-4">
       <h2 className="text-lg font-bold text-slate-600 dark:text-gray-100">
@@ -18,5 +18,3 @@ const HeaderWithCloseBtn = ({ onClose, headerText }: Props) => {
     </div>
   );
 };
-
-export default HeaderWithCloseBtn;

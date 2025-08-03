@@ -4,3 +4,4 @@ export const ACCESS_KEY =
   'IXaUZw_5aHMWXIoYxGPyPgoot-_n2YDBv6Rn_KPDzZQ';
 
 export const IMAGES_PER_PAGE = 6;
+export const DEFAULT_PAGE = '1';

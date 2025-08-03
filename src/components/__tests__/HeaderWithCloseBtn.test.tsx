@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import HeaderWithCloseBtn from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
+import { HeaderWithCloseBtn } from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
 
 describe('HeaderWithCloseBtn', () => {
   it('renders header text and close button', () => {

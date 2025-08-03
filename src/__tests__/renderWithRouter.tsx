@@ -1,4 +1,5 @@
 import { ReactElement } from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@/app/theme/ThemeProvider';
@@ -11,14 +12,22 @@ export const renderWithRouter = (ui: ReactElement) => {
   );
 };
 
-export const renderWithRouterAndParams = (
-  ui: React.ReactElement,
-  search = '?page=2&query=cat'
-) => {
-  window.history.pushState({}, 'Test page', search);
+interface Options {
+  route?: string;
+  path?: string;
+}
+
+export function renderWithRouterAndParams(
+  ui: ReactElement,
+  options: Options = {}
+) {
+  const { route = '/', path = '/' } = options;
+
   return render(
-    <ThemeProvider>
-      <BrowserRouter>{ui}</BrowserRouter>
-    </ThemeProvider>
+    <MemoryRouter initialEntries={[route]}>
+      <Routes>
+        <Route path={path} element={ui} />
+      </Routes>
+    </MemoryRouter>
   );
-};
+}

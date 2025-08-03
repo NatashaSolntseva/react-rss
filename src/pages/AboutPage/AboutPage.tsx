@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const AboutPage = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="max-w-2xl mx-auto p-6 ">
-      <h1 className="text-3xl font-bold mb-4 text-slate-800 dark:text-gray-200 ">
+    <div className="max-w-2xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-4 text-slate-800 dark:text-gray-200">
         About Image Explorer
       </h1>
 
@@ -34,7 +36,7 @@ export const AboutPage = () => {
         </Link>
       </p>
 
-      <p className="text-slate-600 dark:text-gray-200 italic">
+      <p className="mb-6 text-slate-600 dark:text-gray-200 italic">
         Created by{' '}
         <Link
           to={'https://github.com/NatashaSolntseva'}
@@ -45,6 +47,12 @@ export const AboutPage = () => {
           Natasha Solntseva
         </Link>
       </p>
+      <button
+        onClick={() => navigate(-1)}
+        className="cursor-pointer  px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 transition"
+      >
+        ← Назад
+      </button>
     </div>
   );
 };

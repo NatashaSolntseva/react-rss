@@ -6,6 +6,7 @@ export const ThemeToggle = () => {
 
   return (
     <div
+      data-testid="theme-toggle"
       onClick={toggleTheme}
       className={`relative w-18 h-6 rounded-full flex items-center px-1 cursor-pointer transition-colors duration-300 ${
         isDark ? 'bg-slate-800 justify-start' : 'bg-gray-300 justify-end'

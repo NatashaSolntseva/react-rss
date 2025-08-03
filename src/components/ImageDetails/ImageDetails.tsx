@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchPhotoDetails } from '@/api/api';
 import { UnsplashImageDetails } from '@/api/types';
 import { Loader } from '@/components/Loader/Loader';
-import HeaderWithCloseBtn from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
+import { HeaderWithCloseBtn } from '@/components/HeaderWithCloseBtn/HeaderWithCloseBtn';
+import { DEFAULT_PAGE } from '@/api/constants';
 
 export const ImageDetails = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const detailsId = searchParams.get('details');
+  const { id, page: pageParam } = useParams();
+  const navigate = useNavigate();
+  const page = Number(pageParam) || Number(DEFAULT_PAGE);
+
   const [details, setDetails] = useState<UnsplashImageDetails | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!detailsId) {
+    if (!id) {
       setDetails(null);
       setError(null);
       return;
@@ -24,7 +27,7 @@ export const ImageDetails = () => {
       setError(null);
 
       try {
-        const data = await fetchPhotoDetails(detailsId);
+        const data = await fetchPhotoDetails(id);
         setDetails(data);
       } catch (err) {
         console.error('Error loading details:', err);
@@ -34,7 +37,7 @@ export const ImageDetails = () => {
           (err.message.includes('404') || err.message === 'API error: 404');
 
         if (is404) {
-          setError(`Image not found (ID: ${detailsId})`);
+          setError(`Image not found (ID: ${id})`);
         } else {
           setError('Error fetching image details');
         }
@@ -46,18 +49,18 @@ export const ImageDetails = () => {
     };
 
     fetchDetails();
-  }, [detailsId]);
+  }, [id]);
 
   const handleClose = () => {
-    searchParams.delete('details');
-    setSearchParams(searchParams);
+    navigate(`/${page}`);
   };
 
-  if (!detailsId) return null;
+  if (!id) return null;
 
   return (
     <aside className="p-4 bg-white dark:bg-gray-800 rounded shadow overflow-hidden">
       {loading && <Loader />}
+
       {!loading && error && (
         <div>
           <HeaderWithCloseBtn
