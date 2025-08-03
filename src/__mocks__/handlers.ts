@@ -1,6 +1,10 @@
 import { http, HttpResponse } from 'msw';
 import { BASE_URL } from '@/api/constants';
-import { mockApiResponse, mockPhotoDetails } from '@/api/__mocks__/mockApiRes';
+import {
+  mockApiResponse,
+  mockPhotoDetails,
+  mockSearchResponse,
+} from '@/api/__mocks__/mockApiRes';
 
 export const handlers = [
   http.get(`${BASE_URL}/photos`, () => {
@@ -8,7 +12,7 @@ export const handlers = [
   }),
 
   http.get(`${BASE_URL}/search/photos`, () => {
-    return HttpResponse.json({ results: mockApiResponse });
+    return HttpResponse.json(mockSearchResponse);
   }),
 
   http.get(`${BASE_URL}/photos/:id`, () => {

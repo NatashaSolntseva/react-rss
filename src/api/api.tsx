@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { BASE_URL, ACCESS_KEY } from './constants';
+import { BASE_URL, ACCESS_KEY, IMAGES_PER_PAGE } from './constants';
 import type {
   CardItem,
   UnsplashApiItem,
@@ -41,7 +41,7 @@ async function handleAxios<T>(promise: Promise<{ data: T }>): Promise<T> {
 
 export async function fetchLatestImages(
   page = 1,
-  limit = 6
+  limit = IMAGES_PER_PAGE
 ): Promise<CardItem[]> {
   const params = new URLSearchParams({
     page: page.toString(),
@@ -58,8 +58,8 @@ export async function fetchLatestImages(
 export async function searchImages(
   query: string,
   page = 1,
-  limit = 6
-): Promise<CardItem[]> {
+  limit = IMAGES_PER_PAGE
+): Promise<{ results: CardItem[]; totalImages: number }> {
   const params = new URLSearchParams({
     query,
     page: page.toString(),
@@ -70,7 +70,10 @@ export async function searchImages(
     api.get<UnsplashSearchResponse>(`/search/photos?${params.toString()}`)
   );
 
-  return data.results.map(toCardItem);
+  return {
+    results: data.results.map(toCardItem),
+    totalImages: data.total,
+  };
 }
 
 export async function fetchPhotoDetails(

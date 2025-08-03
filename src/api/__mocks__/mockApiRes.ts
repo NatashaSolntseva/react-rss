@@ -1,4 +1,8 @@
-import { type UnsplashApiItem, UnsplashImageDetails } from '@/api/types';
+import {
+  type UnsplashApiItem,
+  UnsplashImageDetails,
+  UnsplashSearchResponse,
+} from '@/api/types';
 
 export const mockApiResponse: UnsplashApiItem[] = [
   {
@@ -22,6 +26,12 @@ export const mockApiResponse: UnsplashApiItem[] = [
     },
   },
 ];
+
+export const mockSearchResponse: UnsplashSearchResponse = {
+  total: 75,
+  total_pages: 8,
+  results: mockApiResponse,
+};
 
 export const mockPhotoDetails: UnsplashImageDetails = {
   id: 'abc123',

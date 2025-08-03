@@ -9,13 +9,13 @@ import { CardList } from '@/components/CardList/CardList';
 import { Loader } from '@/components/Loader/Loader';
 import { ImageDetails } from '@/components/ImageDetails/ImageDetails';
 import { Flyout } from '@/components/Flyout/Flyout';
-
-const IMAGES_PER_PAGE = 6;
+import { IMAGES_PER_PAGE } from '@/api/constants';
 
 export const HomePage = () => {
   const [images, setImages] = useState<CardItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [totalPages, setTotalPages] = useState<number | null>(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
@@ -26,14 +26,24 @@ export const HomePage = () => {
     setLoading(true);
 
     try {
-      const data = searchTerm
-        ? await searchImages(searchTerm, page, IMAGES_PER_PAGE)
-        : await fetchLatestImages(page, IMAGES_PER_PAGE);
+      if (searchTerm) {
+        const { results, totalImages } = await searchImages(
+          searchTerm,
+          page,
+          IMAGES_PER_PAGE
+        );
+        setImages(results);
+        const calculatedTotalPages = Math.ceil(totalImages / IMAGES_PER_PAGE);
+        setTotalPages(calculatedTotalPages);
+      } else {
+        const results = await fetchLatestImages(page, IMAGES_PER_PAGE);
+        setImages(results);
+        setTotalPages(null);
+      }
 
-      setImages(data);
       setError(null);
     } catch (err) {
-      console.error('Image fetch error:', err);
+      console.log(err);
       setError('Something went wrong while fetching images.');
     } finally {
       setLoading(false);
@@ -94,6 +104,7 @@ export const HomePage = () => {
 
         <span className="text-slate-700 dark:text-gray-100 font-medium px-2">
           Page {page}
+          {totalPages ? ` of ${totalPages}` : ''}
         </span>
 
         <button

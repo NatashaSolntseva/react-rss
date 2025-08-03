@@ -15,9 +15,11 @@ describe('UnsplashAPI', () => {
     expect(result[0].id).toBe(mockApiResponse[0].id);
   });
 
-  it('searchImages returns results', async () => {
-    const result = await searchImages('cat', 1, 1);
-    expect(result[0].author).toBe(mockApiResponse[0].user.name);
+  it('searchImages returns results and totalImages', async () => {
+    const { results, totalImages } = await searchImages('cat', 1, 1);
+    expect(results[0].author).toBe(mockApiResponse[0].user.name);
+    expect(typeof totalImages).toBe('number');
+    expect(totalImages).toBeGreaterThan(0);
   });
 
   it('fetchPhotoDetails returns correct data', async () => {
