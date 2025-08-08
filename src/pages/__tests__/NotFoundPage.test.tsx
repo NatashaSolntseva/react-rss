@@ -15,6 +15,6 @@ describe('NotFoundPage', () => {
       screen.getByText(/Sorry, the page you're looking for doesn't exist/i)
     ).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: /назад/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /back/i })).toBeInTheDocument();
   });
 });
