@@ -32,22 +32,24 @@ export const HomePage = () => {
   }, [isPageValid, isIdValid, navigate]);
 
   const searchTerm = localStorage.getItem('searchTerm') || '';
+  const isSearch = !!searchTerm;
 
   const {
     data: searchData,
-    isLoading: isSearchLoading,
+    isFetching: isSearchFetching,
     isError: isSearchError,
     error: searchError,
+    refetch: searchRefetch,
   } = useSearchImages(searchTerm, page);
 
   const {
     data: latestData,
-    isLoading: isLatestLoading,
+    isFetching: isLatestFetching,
     isError: isLatestError,
     error: latestError,
-  } = useLatestImage(page);
+    refetch: latestRefetch,
+  } = useLatestImage(page, IMAGES_PER_PAGE, !isSearch);
 
-  const isSearch = !!searchTerm;
   const images = isSearch ? (searchData?.results ?? []) : (latestData ?? []);
   const totalImages = searchData?.totalImages ?? null;
 
@@ -56,7 +58,7 @@ export const HomePage = () => {
     (isLatestError && latestError?.message) ||
     null;
 
-  const loading = isSearch ? isSearchLoading : isLatestLoading;
+  const loading = isSearch ? isSearchFetching : isLatestFetching;
   const totalPages = totalImages
     ? Math.ceil(totalImages / IMAGES_PER_PAGE)
     : null;
@@ -71,8 +73,17 @@ export const HomePage = () => {
     navigate(`/${newPage}${idParam ? `/${idParam}` : ''}`);
   };
 
+  const handleRefresh = () => {
+    if (isSearch) {
+      searchRefetch();
+    } else {
+      latestRefetch();
+    }
+  };
+
   return (
     <div className="flex-grow">
+      {loading && <Loader />}
       <SearchBar onSearch={handleSearch} initialValue={searchTerm} />
 
       <div className="flex min-h-[400px] flex-col items-stretch gap-6 transition-all md:flex-row">
@@ -110,9 +121,9 @@ export const HomePage = () => {
           text="Next"
           onClick={() => goToPage(page + 1)}
         />
+        <AppButton text="Refresh" onClick={handleRefresh} />
       </div>
 
-      {loading && <Loader />}
       <Flyout />
     </div>
   );

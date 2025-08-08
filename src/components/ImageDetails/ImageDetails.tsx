@@ -11,7 +11,7 @@ export const ImageDetails = () => {
   const navigate = useNavigate();
   const page = Number(pageParam) || Number(DEFAULT_PAGE);
 
-  const { data: details, isLoading, error } = useImageDetails(id);
+  const { data: details, isFetching, error, refetch } = useImageDetails(id);
 
   const handleClose = () => {
     navigate(`/${page}`);
@@ -21,9 +21,9 @@ export const ImageDetails = () => {
 
   return (
     <aside className="overflow-hidden rounded bg-white p-4 shadow dark:bg-gray-800">
-      {isLoading && <Loader />}
+      {isFetching && <Loader fullScreen={false} />}
 
-      {!isLoading && error && (
+      {!isFetching && error && (
         <div>
           <HeaderWithCloseBtn
             headerText="Image Details"
@@ -33,7 +33,7 @@ export const ImageDetails = () => {
         </div>
       )}
 
-      {!isLoading && details && (
+      {!isFetching && details && (
         <div>
           <HeaderWithCloseBtn
             headerText="Image Details"
@@ -77,7 +77,7 @@ export const ImageDetails = () => {
 
           <AppButton
             text="Refresh"
-            onClick={() => console.log('Refresh image details')}
+            onClick={() => refetch()}
             className="mt-3"
           />
         </div>
