@@ -25,7 +25,7 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-100 text-red-600 text-lg font-semibold">
+        <div className="flex min-h-screen items-center justify-center bg-slate-100 text-lg font-semibold text-red-600">
           Something went wrong. Please try refreshing the page.
         </div>
       );

@@ -3,9 +3,9 @@ import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
 
 export const Header = () => {
   return (
-    <header className="bg-slate-800 dark:bg-gray-950 text-white dark:text-gray-100 px-6 py-4">
+    <header className="bg-slate-800 px-6 py-4 text-white dark:bg-gray-950 dark:text-gray-100">
       <div
-        className="flex justify-between items-center sm:hidden mb-2"
+        className="mb-2 flex items-center justify-between sm:hidden"
         data-testid="header-mobile-top"
       >
         <Link
@@ -26,7 +26,7 @@ export const Header = () => {
           to="/"
           data-testid="mobile-home-link"
           className={({ isActive }) =>
-            isActive ? 'underline text-blue-400' : 'hover:underline'
+            isActive ? 'text-blue-400 underline' : 'hover:underline'
           }
         >
           Home
@@ -35,7 +35,7 @@ export const Header = () => {
           to="/about"
           data-testid="mobile-about-link"
           className={({ isActive }) =>
-            isActive ? 'underline text-blue-400' : 'hover:underline'
+            isActive ? 'text-blue-400 underline' : 'hover:underline'
           }
         >
           About
@@ -43,7 +43,7 @@ export const Header = () => {
       </nav>
 
       <div
-        className="hidden sm:flex items-center justify-between"
+        className="hidden items-center justify-between sm:flex"
         data-testid="header-desktop"
       >
         <Link
@@ -54,12 +54,12 @@ export const Header = () => {
           Image Explorer
         </Link>
 
-        <nav className="flex gap-6 text-xl items-center">
+        <nav className="flex items-center gap-6 text-xl">
           <NavLink
             to="/"
             data-testid="desktop-home-link"
             className={({ isActive }) =>
-              isActive ? 'underline text-blue-400' : 'hover:underline'
+              isActive ? 'text-blue-400 underline' : 'hover:underline'
             }
           >
             Home
@@ -68,7 +68,7 @@ export const Header = () => {
             to="/about"
             data-testid="desktop-about-link"
             className={({ isActive }) =>
-              isActive ? 'underline text-blue-400' : 'hover:underline'
+              isActive ? 'text-blue-400 underline' : 'hover:underline'
             }
           >
             About

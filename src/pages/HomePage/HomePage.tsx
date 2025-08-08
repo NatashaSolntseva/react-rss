@@ -1,21 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
-
-import { fetchLatestImages, searchImages } from '@/api/api';
-import type { CardItem } from '@/api/types';
 
 import { SearchBar } from '@/components/SearchBar/SearchBar';
 import { CardList } from '@/components/CardList/CardList';
 import { Loader } from '@/components/Loader/Loader';
 import { Flyout } from '@/components/Flyout/Flyout';
 import { DEFAULT_PAGE, IMAGES_PER_PAGE } from '@/api/constants';
+import { useSearchImages } from './model/useSearchImages';
+import { useLatestImage } from './model/useLatestImages';
+import { AppButton } from '@/shared/ui/AppButton/AppButton';
 
 export const HomePage = () => {
-  const [images, setImages] = useState<CardItem[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [totalPages, setTotalPages] = useState<number | null>(null);
-
   const navigate = useNavigate();
   const { page: pageParam, id: idParam } = useParams();
   const page = Number(pageParam) || Number(DEFAULT_PAGE);
@@ -38,37 +33,33 @@ export const HomePage = () => {
 
   const searchTerm = localStorage.getItem('searchTerm') || '';
 
-  const fetchImages = useCallback(async () => {
-    setLoading(true);
+  const {
+    data: searchData,
+    isLoading: isSearchLoading,
+    isError: isSearchError,
+    error: searchError,
+  } = useSearchImages(searchTerm, page);
 
-    try {
-      if (searchTerm) {
-        const { results, totalImages } = await searchImages(
-          searchTerm,
-          page,
-          IMAGES_PER_PAGE
-        );
-        setImages(results);
-        const calculatedTotalPages = Math.ceil(totalImages / IMAGES_PER_PAGE);
-        setTotalPages(calculatedTotalPages);
-      } else {
-        const results = await fetchLatestImages(page, IMAGES_PER_PAGE);
-        setImages(results);
-        setTotalPages(null);
-      }
+  const {
+    data: latestData,
+    isLoading: isLatestLoading,
+    isError: isLatestError,
+    error: latestError,
+  } = useLatestImage(page);
 
-      setError(null);
-    } catch (err) {
-      console.log(err);
-      setError('Something went wrong while fetching images.');
-    } finally {
-      setLoading(false);
-    }
-  }, [page, searchTerm]);
+  const isSearch = !!searchTerm;
+  const images = isSearch ? (searchData?.results ?? []) : (latestData ?? []);
+  const totalImages = searchData?.totalImages ?? null;
 
-  useEffect(() => {
-    fetchImages();
-  }, [fetchImages]);
+  const error =
+    (isSearchError && searchError?.message) ||
+    (isLatestError && latestError?.message) ||
+    null;
+
+  const loading = isSearch ? isSearchLoading : isLatestLoading;
+  const totalPages = totalImages
+    ? Math.ceil(totalImages / IMAGES_PER_PAGE)
+    : null;
 
   const handleSearch = (term: string) => {
     const trimmed = term.trim();
@@ -84,10 +75,10 @@ export const HomePage = () => {
     <div className="flex-grow">
       <SearchBar onSearch={handleSearch} initialValue={searchTerm} />
 
-      <div className="flex flex-col md:flex-row gap-6 transition-all items-stretch min-h-[400px]">
+      <div className="flex min-h-[400px] flex-col items-stretch gap-6 transition-all md:flex-row">
         <div className={`${idParam ? 'md:w-2/3' : 'w-full'} h-full`}>
           {error && (
-            <div className="text-center text-red-600 font-medium mb-4">
+            <div className="mb-4 text-center font-medium text-red-600">
               {error}
             </div>
           )}
@@ -95,34 +86,30 @@ export const HomePage = () => {
         </div>
 
         {idParam && (
-          <div className="w-full md:w-1/3 h-full">
+          <div className="h-full w-full md:w-1/3">
             <Outlet />
           </div>
         )}
       </div>
 
-      <div className="flex justify-center items-center gap-4 mt-8">
-        <button
-          data-testid="prev-btn"
+      <div className="mt-8 flex items-center justify-center gap-4">
+        <AppButton
+          // data-testid="prev-btn"
+          text="Previous"
           onClick={() => goToPage(page - 1)}
           disabled={page <= Number(DEFAULT_PAGE)}
-          className="px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-        >
-          Previous
-        </button>
+        />
 
-        <span className="text-slate-700 dark:text-gray-100 font-medium px-2">
+        <span className="px-2 font-medium text-slate-700 dark:text-gray-100">
           Page {page}
           {totalPages ? ` of ${totalPages}` : ''}
         </span>
 
-        <button
-          data-testid="next-btn"
+        <AppButton
+          // data-testid="next-btn"
+          text="Next"
           onClick={() => goToPage(page + 1)}
-          className="px-4 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 cursor-pointer"
-        >
-          Next
-        </button>
+        />
       </div>
 
       {loading && <Loader />}

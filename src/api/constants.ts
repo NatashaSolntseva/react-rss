@@ -5,3 +5,4 @@ export const ACCESS_KEY =
 
 export const IMAGES_PER_PAGE = 6;
 export const DEFAULT_PAGE = '1';
+export const STALE_TIME_IN_MINUTES = 1000 * 60 * 3;

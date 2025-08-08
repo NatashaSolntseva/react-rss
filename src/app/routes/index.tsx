@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import { Layout } from '@/components/Layout/Layout';
+import { Layout } from '@/shared/ui/Layout/Layout';
 import { HomePage } from '@/pages/HomePage/HomePage';
 import { AboutPage } from '@/pages/AboutPage/AboutPage';
 import { NotFoundPage } from '@/pages/NotFoundPage/NotFoundPage';
