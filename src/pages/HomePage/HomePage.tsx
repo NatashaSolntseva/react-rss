@@ -105,7 +105,6 @@ export const HomePage = () => {
 
       <div className="mt-8 flex items-center justify-center gap-4">
         <AppButton
-          // data-testid="prev-btn"
           text="Previous"
           onClick={() => goToPage(page - 1)}
           disabled={page <= Number(DEFAULT_PAGE)}
@@ -116,11 +115,7 @@ export const HomePage = () => {
           {totalPages ? ` of ${totalPages}` : ''}
         </span>
 
-        <AppButton
-          // data-testid="next-btn"
-          text="Next"
-          onClick={() => goToPage(page + 1)}
-        />
+        <AppButton text="Next" onClick={() => goToPage(page + 1)} />
         <AppButton text="Refresh" onClick={handleRefresh} />
       </div>
 

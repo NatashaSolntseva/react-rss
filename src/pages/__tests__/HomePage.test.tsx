@@ -91,27 +91,58 @@ describe('HomePage', () => {
     expect(navigateMock).toHaveBeenCalledWith('/1');
   });
 
-  // it('navigates to next page without idParam when Next button is clicked', () => {
-  //   const navigateMock = vi.fn();
-  //   (router.useNavigate as unknown as Mock).mockReturnValue(navigateMock);
+  it('navigates to next page on Next button click', () => {
+    const navigateMock = vi.fn();
+    (router.useNavigate as unknown as Mock).mockReturnValue(navigateMock);
 
-  //   renderWithRouterAndParams(<HomePage />, { route: '/2', path: '/:page' });
+    renderWithRouter(<HomePage />);
 
-  //   const nextButton = screen.getByTestId('next-btn');
-  //   fireEvent.click(nextButton);
+    fireEvent.click(screen.getByText(/Next/i));
+    expect(navigateMock).toHaveBeenCalledWith('/2');
+  });
 
-  //   expect(navigateMock).toHaveBeenCalledWith('/3');
-  // });
+  it('calls latestRefetch when Refresh is clicked without search term', async () => {
+    const mockLatest = vi
+      .spyOn(api, 'fetchLatestImages')
+      .mockResolvedValueOnce(mockItems);
 
-  // it('navigates to previous page with idParam when Previous button is clicked', () => {
-  //   const navigateMock = vi.fn();
-  //   (router.useNavigate as unknown as Mock).mockReturnValue(navigateMock);
+    renderWithRouter(<HomePage />);
 
-  //   renderWithRouterAndParams(<HomePage />, { route: '/4', path: '/:page' });
+    await screen.findByAltText(/A beautiful sunrise over the mountains/i);
 
-  //   const prevButton = screen.getByTestId('prev-btn');
-  //   fireEvent.click(prevButton);
+    const refreshBtn = screen.getByRole('button', { name: /refresh/i });
+    fireEvent.click(refreshBtn);
 
-  //   expect(navigateMock).toHaveBeenCalledWith('/3');
-  // });
+    expect(mockLatest).toHaveBeenCalled();
+  });
+
+  it('calls searchRefetch when Refresh is clicked in search mode', async () => {
+    const mockSearchImages = vi
+      .spyOn(api, 'searchImages')
+      .mockResolvedValueOnce({
+        results: mockItems,
+        totalImages: mockItems.length,
+      });
+
+    localStorage.setItem('searchTerm', 'nature');
+    renderWithRouter(<HomePage />);
+
+    await screen.findByAltText(/A beautiful sunrise over the mountains/i);
+
+    const refreshBtn = screen.getByRole('button', { name: /refresh/i });
+    fireEvent.click(refreshBtn);
+
+    expect(mockSearchImages).toHaveBeenCalled();
+  });
+
+  it('displays error message when searchImages fails', async () => {
+    vi.spyOn(api, 'searchImages').mockRejectedValueOnce(
+      new Error('Search failed')
+    );
+
+    localStorage.setItem('searchTerm', 'nature');
+    renderWithRouter(<HomePage />);
+
+    expect(await screen.findByText(/Search failed/i)).toBeInTheDocument();
+  });
 });
