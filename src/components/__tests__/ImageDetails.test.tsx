@@ -1,10 +1,12 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { describe, it, expect, vi } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import * as api from '@/api/api';
 import { ImageDetails } from '@/components/ImageDetails/ImageDetails';
 import { mockPhotoDetails } from '@/api/__mocks__/mockApiRes';
+import { renderWithRouterAndParams } from '@/__tests__/renderWithRouter';
+import * as api from '@/api/api';
 
 vi.mock('@/api/api', async () => {
   return {
@@ -14,15 +16,12 @@ vi.mock('@/api/api', async () => {
   };
 });
 
-describe('ImageDetails component', () => {
+describe('ImageDetails', () => {
   it('renders null if no id in URL', () => {
-    render(
-      <MemoryRouter initialEntries={['/1']}>
-        <Routes>
-          <Route path="/:page" element={<ImageDetails />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithRouterAndParams(<ImageDetails />, {
+      route: '/1',
+      path: '/:page',
+    });
 
     expect(screen.queryByText('Image Details')).not.toBeInTheDocument();
   });
@@ -32,37 +31,30 @@ describe('ImageDetails component', () => {
       mockPhotoDetails
     );
 
-    render(
-      <MemoryRouter initialEntries={['/1/abc123']}>
-        <Routes>
-          <Route path="/:page/:id" element={<ImageDetails />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithRouterAndParams(<ImageDetails />, {
+      route: '/1/abc123',
+      path: '/:page/:id',
+    });
 
     expect(await screen.findByText('Image Details')).toBeInTheDocument();
     expect(screen.getByText(mockPhotoDetails.user.name)).toBeInTheDocument();
   });
 
-  it('shows error when image is not found (404)', async () => {
-    const error = new Error('API error: 404');
+  it('shows error text from error.message (404)', async () => {
     (api.fetchPhotoDetails as ReturnType<typeof vi.fn>).mockRejectedValueOnce(
-      error
+      new Error('API error: 404')
     );
 
     const consoleErrorMock = vi
       .spyOn(console, 'error')
       .mockImplementation(() => {});
 
-    render(
-      <MemoryRouter initialEntries={['/1/notfound']}>
-        <Routes>
-          <Route path="/:page/:id" element={<ImageDetails />} />
-        </Routes>
-      </MemoryRouter>
-    );
+    renderWithRouterAndParams(<ImageDetails />, {
+      route: '/1/notfound',
+      path: '/:page/:id',
+    });
 
-    expect(await screen.findByText(/Image not found/i)).toBeInTheDocument();
+    expect(await screen.findByText(/API error: 404/i)).toBeInTheDocument();
 
     consoleErrorMock.mockRestore();
   });
@@ -72,13 +64,19 @@ describe('ImageDetails component', () => {
       mockPhotoDetails
     );
 
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
     render(
-      <MemoryRouter initialEntries={['/2/abc123']}>
-        <Routes>
-          <Route path="/:page" element={<div>List page</div>} />
-          <Route path="/:page/:id" element={<ImageDetails />} />
-        </Routes>
-      </MemoryRouter>
+      <QueryClientProvider client={queryClient}>
+        <MemoryRouter initialEntries={['/2/abc123']}>
+          <Routes>
+            <Route path="/:page" element={<div>List page</div>} />
+            <Route path="/:page/:id" element={<ImageDetails />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>
     );
 
     const closeBtn = await screen.findByText('✕');

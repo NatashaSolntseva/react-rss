@@ -1,8 +1,16 @@
-export const Loader = () => {
+interface LoaderProps {
+  fullScreen?: boolean;
+}
+
+export const Loader = ({ fullScreen = true }: LoaderProps) => {
   return (
-    <div className="fixed inset-0 z-50 bg-black/30 flex items-center justify-center">
+    <div
+      className={`z-50 flex items-center justify-center ${
+        fullScreen ? 'fixed inset-0 bg-black/30' : 'h-full w-full'
+      }`}
+    >
       <div
-        className="w-16 h-16 border-4 border-slate-300 border-t-slate-800 rounded-full animate-spin"
+        className="h-12 w-12 animate-spin rounded-full border-4 border-slate-300 border-t-slate-800"
         aria-label="loading"
       />
     </div>

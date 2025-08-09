@@ -3,9 +3,9 @@ import logo from '@/assets/logo-rsschool3.png';
 
 export const Footer = () => {
   return (
-    <footer className="bg-slate-800 dark:bg-gray-950 text-white dark:text-gray-100 py-6 px-6 text-sm">
+    <footer className="bg-slate-800 px-6 py-6 text-sm text-white dark:bg-gray-950 dark:text-gray-100">
       <div
-        className="hidden sm:flex items-center justify-between"
+        className="hidden items-center justify-between sm:flex"
         data-testid="footer-desktop"
       >
         <Link
@@ -34,7 +34,7 @@ export const Footer = () => {
         className="flex flex-col items-center gap-2 sm:hidden"
         data-testid="footer-mobile"
       >
-        <div className="flex justify-between w-full">
+        <div className="flex w-full justify-between">
           <Link
             to="https://github.com/NatashaSolntseva"
             target="_blank"

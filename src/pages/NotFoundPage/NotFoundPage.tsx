@@ -1,25 +1,21 @@
 import { useNavigate } from 'react-router-dom';
+import { AppButton } from '@/shared/ui/AppButton/AppButton';
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="text-center py-10 px-4">
+    <div className="px-4 py-10 text-center">
       <h2
         data-testid="not-found-title"
-        className="text-4xl font-bold text-slate-800 dark:text-gray-100 mb-4"
+        className="mb-4 text-4xl font-bold text-slate-800 dark:text-gray-100"
       >
         404 - Page Not Found
       </h2>
-      <p className="text-slate-600 dark:text-gray-300 mb-6">
+      <p className="mb-6 text-slate-600 dark:text-gray-300">
         Sorry, the page you&apos;re looking for doesn&apos;t exist.
       </p>
-      <button
-        onClick={() => navigate(-1)}
-        className="cursor-pointer mt-4 px-6 py-2 bg-slate-600 text-white rounded hover:bg-slate-700 transition"
-      >
-        ← Назад
-      </button>
+      <AppButton text="← Back" onClick={() => navigate(-1)} />
     </div>
   );
 };

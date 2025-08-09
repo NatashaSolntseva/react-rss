@@ -8,12 +8,12 @@ export const ThemeToggle = () => {
     <div
       data-testid="theme-toggle"
       onClick={toggleTheme}
-      className={`relative w-18 h-6 rounded-full flex items-center px-1 cursor-pointer transition-colors duration-300 ${
-        isDark ? 'bg-slate-800 justify-start' : 'bg-gray-300 justify-end'
+      className={`relative flex h-6 w-18 cursor-pointer items-center rounded-full px-1 transition-colors duration-300 ${
+        isDark ? 'justify-start bg-slate-800' : 'justify-end bg-gray-300'
       }`}
     >
       <div
-        className={`w-5 h-5 rounded-full transition-all duration-300 ${
+        className={`h-5 w-5 rounded-full transition-all duration-300 ${
           isDark ? 'bg-slate-100' : 'bg-slate-800'
         }`}
       ></div>
@@ -21,8 +21,8 @@ export const ThemeToggle = () => {
       <span
         className={`absolute text-[10px] font-medium transition-all duration-300 sm:text-[8px] ${
           isDark
-            ? 'text-slate-100 left-8 opacity-100'
-            : 'text-slate-800 left-2 opacity-100'
+            ? 'left-8 text-slate-100 opacity-100'
+            : 'left-2 text-slate-800 opacity-100'
         }`}
       >
         {isDark ? 'NIGHT' : 'DAY'}

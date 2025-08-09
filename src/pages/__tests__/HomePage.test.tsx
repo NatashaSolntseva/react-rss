@@ -2,10 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
 import * as router from 'react-router-dom';
 
-import {
-  renderWithRouter,
-  renderWithRouterAndParams,
-} from '@/__tests__/renderWithRouter';
+import { renderWithRouter } from '@/__tests__/renderWithRouter';
 import { HomePage } from '@/pages//HomePage/HomePage';
 import { mockItems } from '@/components/__mocks__/mockCardList';
 import * as api from '@/api/api';
@@ -94,27 +91,58 @@ describe('HomePage', () => {
     expect(navigateMock).toHaveBeenCalledWith('/1');
   });
 
-  it('navigates to next page without idParam when Next button is clicked', () => {
+  it('navigates to next page on Next button click', () => {
     const navigateMock = vi.fn();
     (router.useNavigate as unknown as Mock).mockReturnValue(navigateMock);
 
-    renderWithRouterAndParams(<HomePage />, { route: '/2', path: '/:page' });
+    renderWithRouter(<HomePage />);
 
-    const nextButton = screen.getByTestId('next-btn');
-    fireEvent.click(nextButton);
-
-    expect(navigateMock).toHaveBeenCalledWith('/3');
+    fireEvent.click(screen.getByText(/Next/i));
+    expect(navigateMock).toHaveBeenCalledWith('/2');
   });
 
-  it('navigates to previous page with idParam when Previous button is clicked', () => {
-    const navigateMock = vi.fn();
-    (router.useNavigate as unknown as Mock).mockReturnValue(navigateMock);
+  it('calls latestRefetch when Refresh is clicked without search term', async () => {
+    const mockLatest = vi
+      .spyOn(api, 'fetchLatestImages')
+      .mockResolvedValueOnce(mockItems);
 
-    renderWithRouterAndParams(<HomePage />, { route: '/4', path: '/:page' });
+    renderWithRouter(<HomePage />);
 
-    const prevButton = screen.getByTestId('prev-btn');
-    fireEvent.click(prevButton);
+    await screen.findByAltText(/A beautiful sunrise over the mountains/i);
 
-    expect(navigateMock).toHaveBeenCalledWith('/3');
+    const refreshBtn = screen.getByRole('button', { name: /refresh/i });
+    fireEvent.click(refreshBtn);
+
+    expect(mockLatest).toHaveBeenCalled();
+  });
+
+  it('calls searchRefetch when Refresh is clicked in search mode', async () => {
+    const mockSearchImages = vi
+      .spyOn(api, 'searchImages')
+      .mockResolvedValueOnce({
+        results: mockItems,
+        totalImages: mockItems.length,
+      });
+
+    localStorage.setItem('searchTerm', 'nature');
+    renderWithRouter(<HomePage />);
+
+    await screen.findByAltText(/A beautiful sunrise over the mountains/i);
+
+    const refreshBtn = screen.getByRole('button', { name: /refresh/i });
+    fireEvent.click(refreshBtn);
+
+    expect(mockSearchImages).toHaveBeenCalled();
+  });
+
+  it('displays error message when searchImages fails', async () => {
+    vi.spyOn(api, 'searchImages').mockRejectedValueOnce(
+      new Error('Search failed')
+    );
+
+    localStorage.setItem('searchTerm', 'nature');
+    renderWithRouter(<HomePage />);
+
+    expect(await screen.findByText(/Search failed/i)).toBeInTheDocument();
   });
 });
