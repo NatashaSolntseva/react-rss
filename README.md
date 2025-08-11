@@ -1,6 +1,6 @@
 # 🖼️ Unsplash Image Search App
 
-A React app built with Vite, using class components, Tailwind CSS, ESLint, Prettier, and Husky.  
+A Next js Reaact app built with Vite, using class components, Tailwind CSS, ESLint, Prettier, and Husky.  
 The app allows users to search for images from the [Unsplash API](https://unsplash.com/documentation) and view the latest photos, and view photo details.
 
 ---
