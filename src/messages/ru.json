@@ -1,0 +1,49 @@
+{
+  "Header": {
+    "HomeLink": "Главная",
+    "AboutLink": "О проекте"
+  },
+  "About": {
+    "Title": "О проекте Image Explorer",
+    "Paragraph1": "Это приложение позволяет искать и просматривать качественные изображения с помощью <unsplashLink>Unsplash API</unsplashLink>. Оно поддерживает живой поиск, выдачу изображений, пагинацию и адаптивный интерфейс.",
+    "Paragraph2": "Разработано в рамках <rsSchoolLink>RS School React course</rsSchoolLink>.",
+    "Footer": "Создано <authorLink>Наташа Солнцева</authorLink>",
+    "BackButton": "← Назад"
+  },
+  "ThemeToggle": {
+    "Day": "ДЕНЬ",
+    "Night": "НОЧЬ"
+  },
+  "NotFound": {
+    "Title": "404 - Страница не найдена",
+    "Description": "Извините, страница, которую вы ищете, не существует.",
+    "Back": "← Назад"
+  },
+  "Error": {
+    "Title": "Что-то пошло не так!",
+    "Description": "Пожалуйста, проверьте подключение к интернету или попробуйте позже.",
+    "Reload": "Перезагрузить"
+  },
+  "Pagination": {
+    "Previous": "Предыдущая",
+    "Next": "Следующая",
+    "Page": "Страница",
+    "Of": "из"
+  },
+  "CardList": {
+    "PhotoBy": "Фото от"
+  },
+  "SearchBar": {
+    "Placeholder": "Поиск изображений...",
+    "Search": "Искать",
+    "Reset": "Сброс"
+  },
+  "DetailsHeader": {
+    "Title": "Подробно об изображения"
+  },
+  "DetailsSlot": {
+    "Author": "Автор",
+    "Likes": "Лайки",
+    "Description": "Описание"
+  }
+}

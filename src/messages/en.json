@@ -1,0 +1,49 @@
+{
+  "Header": {
+    "HomeLink": "Home",
+    "AboutLink": "About"
+  },
+  "About": {
+    "Title": "About Image Explorer",
+    "Paragraph1": "This application allows users to search and explore high-quality images using the <unsplashLink>Unsplash API</unsplashLink>. It features live search, image results, pagination, and a responsive interface.",
+    "Paragraph2": "Built as part of the <rsSchoolLink>RS School React course</rsSchoolLink>.",
+    "Footer": "Created by <authorLink>Natasha Solntseva</authorLink>",
+    "BackButton": "← Back"
+  },
+  "ThemeToggle": {
+    "Day": "DAY",
+    "Night": "NIGHT"
+  },
+  "NotFound": {
+    "Title": "404 - Page Not Found",
+    "Description": "Sorry, the page you're looking for doesn't exist.",
+    "Back": "← Back"
+  },
+  "Error": {
+    "Title": "Something went wrong!",
+    "Description": "Please check your internet connection or try again later.",
+    "Reload": "Reload"
+  },
+  "Pagination": {
+    "Previous": "Previous",
+    "Next": "Next",
+    "Page": "Page",
+    "Of": "of"
+  },
+  "CardList": {
+    "PhotoBy": "Photo by"
+  },
+  "SearchBar": {
+    "Placeholder": "Search for images...",
+    "Search": "Search",
+    "Reset": "Reset"
+  },
+  "DetailsHeader": {
+    "Title": "Image Details"
+  },
+  "DetailsSlot": {
+    "Author": "Author",
+    "Likes": "Likes",
+    "Description": "Description"
+  }
+}

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { CardItem } from '@/api/types';
+import { CardItem } from '@/server/types';
 
 interface SelectionState {
   selectedIds: string[];

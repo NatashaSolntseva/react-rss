@@ -12,6 +12,8 @@ lerna-debug.log*
 .env.*.local
 
 node_modules
+.next
+next-env.d.ts
 dist
 dist-ssr
 coverage
