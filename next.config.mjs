@@ -8,7 +8,7 @@ const nextConfig = {
     remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }],
   },
   // output: 'export', // Outputs a Single-Page Application (SPA).
-  distDir: './dist', // Changes the build output directory to `./dist/`.
+  // distDir: './dist', // Changes the build output directory to `./dist/`.
 };
 
 export default withNextIntl(nextConfig);
