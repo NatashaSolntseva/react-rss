@@ -2,12 +2,16 @@ import { fetchLatestImages, searchImages } from '@/server/unsplash';
 import CardListClient from './CardListClient';
 import { IMAGES_PER_PAGE } from '@/server/constants';
 
-type Props = {
-  params: { page: string };
-  searchParams?: { q?: string };
-};
+type PageParams = { page: string };
+type PageSearchParams = { q?: string };
 
-export default async function ListPage({ params, searchParams }: Props) {
+export default async function ListPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<PageParams>;
+  searchParams: Promise<PageSearchParams>;
+}) {
   const { page } = await params;
   const pageNumber = Number(page ?? '1');
 
