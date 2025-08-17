@@ -14,7 +14,6 @@ export function MainPageClient({
 }) {
   const imageId = useSearchParams().get('imageId');
 
-  console.log('imageId', imageId);
   console.log(' initialCardData', initialCardData);
 
   return (

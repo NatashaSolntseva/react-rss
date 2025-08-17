@@ -36,7 +36,7 @@ export default async function RootLayout({
             <QueryProvider>
               <div id="root">
                 <Header />
-                <main className="min-h-[calc(100vh-60px-72px)] flex-grow px-6 py-4">
+                <main className="flex min-h-[calc(100vh-60px-72px)] items-center justify-center px-6 py-6">
                   {children}
                 </main>
                 <Footer />
