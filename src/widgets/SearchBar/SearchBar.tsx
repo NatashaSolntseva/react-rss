@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, KeyboardEvent } from 'react';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 import { AppButton } from '@/shared/ui/';
@@ -13,8 +13,10 @@ export const SearchBar = () => {
   const setSearch = useAppStore((s) => s.setSearchTerm);
   const resetStore = useAppStore((s) => s.reset);
 
+  const [inputValue, setInputValue] = useState(term);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    setInputValue(e.target.value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -24,7 +26,8 @@ export const SearchBar = () => {
   };
 
   const handleSearch = () => {
-    const trimmed = term.trim();
+    console.log('HS');
+    const trimmed = inputValue.trim();
     if (trimmed) {
       setSearch(trimmed);
     } else {
@@ -33,6 +36,7 @@ export const SearchBar = () => {
   };
 
   const handleReset = () => {
+    setInputValue('');
     resetStore();
   };
 
@@ -42,7 +46,7 @@ export const SearchBar = () => {
         className="w-64 rounded border bg-white px-4 py-2 text-black focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-white"
         type="text"
         placeholder={t('Placeholder')}
-        value={term}
+        value={inputValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       />

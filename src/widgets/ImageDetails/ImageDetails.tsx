@@ -5,7 +5,6 @@ import { useSearchParams } from 'next/navigation';
 
 import { HeaderWithCloseBtn } from '@/shared/ui';
 import { useImageDetails } from './model/useImageDetails';
-import { AppButton } from '@/shared/ui/AppButton/AppButton';
 import { useTranslations } from 'next-intl';
 
 interface ImageDetailsProps {
@@ -18,7 +17,7 @@ export const ImageDetails = ({ id }: ImageDetailsProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { data: details, isFetching, error, refetch } = useImageDetails(id);
+  const { data: details, isFetching, error } = useImageDetails(id);
 
   const handleClose = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -77,11 +76,11 @@ export const ImageDetails = ({ id }: ImageDetailsProps) => {
             </p>
           )}
 
-          <AppButton
+          {/* <AppButton
             text="Refresh"
             onClick={() => refetch()}
             className="mt-3"
-          />
+          /> */}
         </div>
       )}
     </aside>

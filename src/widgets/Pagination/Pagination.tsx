@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
+import { useSearchParams } from 'next/navigation';
 
 import {
   useAppStore,
@@ -11,8 +12,8 @@ import {
   selectTotalPages,
 } from '@/app/store/appStore';
 import { AppButton } from '@/shared/ui';
+
 import { DEFAULT_PAGE } from '@/server/constants';
-import { useSearchParams } from 'next/navigation';
 
 export const Pagination = () => {
   const t = useTranslations('Pagination');
@@ -22,7 +23,6 @@ export const Pagination = () => {
   const params = new URLSearchParams(searchParams.toString());
 
   const page = useAppStore(selectPage);
-  console.log('page', page);
   const search = useAppStore(selectSearch);
   const totalPages = useAppStore(selectTotalPages);
   const setPage = useAppStore((s) => s.setPage);
@@ -30,26 +30,33 @@ export const Pagination = () => {
   const isPrev = page <= Number(DEFAULT_PAGE);
   const isNext = totalPages ? page >= totalPages : false;
 
-  const buildHref = (page: number) => {
-    const q = search.trim();
-    return q ? `?page=${page}?q=${encodeURIComponent(q)}` : `?page=${page}`;
-  };
-
   const goTo = (newPage: number) => {
     if (newPage < 1) return;
+
     params.set('page', String(newPage));
+
+    if (search.trim()) {
+      params.set('q', search.trim());
+    }
+
     setPage(newPage);
-    router.push(buildHref(newPage));
+
+    router.push(`?${params.toString()}`);
   };
 
   useEffect(() => {
-    if (searchParams) {
-      const urlPage = searchParams.get('page');
-      if (urlPage) {
-        setPage(Number(urlPage));
-      }
+    if (!searchParams) return;
+
+    const urlPage = searchParams.get('page');
+
+    if (urlPage) {
+      setPage(Number(urlPage));
+    } else {
+      setPage(Number(DEFAULT_PAGE));
+      params.set('page', String(DEFAULT_PAGE));
+      router.replace(`?${params.toString()}`);
     }
-  }, [searchParams, setPage]);
+  }, [searchParams, setPage, router]);
 
   return (
     <div className="mt-8 flex items-center justify-center gap-4">
