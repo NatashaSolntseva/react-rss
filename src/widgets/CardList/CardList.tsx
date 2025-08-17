@@ -1,31 +1,39 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from '@/i18n/navigation';
 import { useSelectionStore } from '@/app/store/selectionStore';
-import { CardItem } from '@/server/types';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 
-interface Props {
-  items: CardItem[];
-  page: number;
-}
+import { selectPage, selectSearch, useAppStore } from '@/app/store/appStore';
+import { useLatestImage } from '@/hooks/useLatestImages';
+import { useSearchImages } from '@/hooks/useSearchImages';
 
-export const CardList = ({ items, page }: Props) => {
+import { IMAGES_PER_PAGE } from '@/server/constants';
+
+export const CardList = () => {
   const t = useTranslations('CardList');
   const router = useRouter();
+
+  const page = useAppStore(selectPage);
+  const searchTerm = useAppStore(selectSearch);
+  const isSearch = !!searchTerm;
+
+  const { data: latestData } = useLatestImage(page, IMAGES_PER_PAGE, !isSearch);
+  const { data: searchData } = useSearchImages(searchTerm, page);
+  const images = isSearch ? (searchData?.results ?? []) : (latestData ?? []);
+
   const selectedIds = useSelectionStore((state) => state.selectedIds);
   const toggleSelected = useSelectionStore((state) => state.toggleSelected);
-
   const isSelected = (id: string) => selectedIds.includes(id);
 
   const handleCardClick = (id: string) => {
-    router.push(`/${page}/${id}`);
+    router.push(`/?page=${page}&imageId=${id}`);
   };
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-      {items.map((item) => (
+      {images.map((item) => (
         <div
           key={item.id}
           className="block cursor-pointer overflow-hidden rounded bg-white shadow transition-all duration-300 hover:scale-[1.01] hover:shadow-lg dark:bg-gray-800"

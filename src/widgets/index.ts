@@ -3,3 +3,4 @@ export { Flyout } from './Flyout/Flyout';
 export { Footer } from './Footer/Footer';
 export { Header } from './Header/Header';
 export { SearchBar } from './SearchBar/SearchBar';
+export { Pagination } from './Pagination/Pagination';

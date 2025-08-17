@@ -1,28 +1,18 @@
-import axios, { AxiosInstance } from 'axios';
-import { BASE_URL, IMAGES_PER_PAGE } from './constants';
-import {
+import axios from 'axios';
+import { BASE_URL, ACCESS_KEY, IMAGES_PER_PAGE } from './constants';
+import type {
   CardItem,
   UnsplashApiItem,
   UnsplashImageDetails,
   UnsplashSearchResponse,
 } from './types';
 
-function createClient(): AxiosInstance {
-  const key =
-    process.env.UNSPLASH_ACCESS_KEY ||
-    'IXaUZw_5aHMWXIoYxGPyPgoot-_n2YDBv6Rn_KPDzZQ';
-  if (!key) {
-    throw new Error('Missing UNSPLASH_ACCESS_KEY env var');
-  }
-  return axios.create({
-    baseURL: BASE_URL,
-    headers: {
-      Authorization: `Client-ID ${key}`,
-    },
-  });
-}
-
-const api = createClient();
+const api = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Authorization: `Client-ID ${ACCESS_KEY}`,
+  },
+});
 
 function toCardItem(item: UnsplashApiItem): CardItem {
   return {
@@ -54,12 +44,12 @@ export async function fetchLatestImages(
   limit = IMAGES_PER_PAGE
 ): Promise<CardItem[]> {
   const params = new URLSearchParams({
-    page: String(page),
-    per_page: String(limit),
+    page: page.toString(),
+    per_page: limit.toString(),
   });
 
-  const data = await handleAxios<UnsplashApiItem[]>(
-    api.get(`/photos?${params.toString()}`)
+  const data = await handleAxios(
+    api.get<UnsplashApiItem[]>(`/photos?${params.toString()}`)
   );
 
   return data.map(toCardItem);
@@ -72,12 +62,12 @@ export async function searchImages(
 ): Promise<{ results: CardItem[]; totalImages: number }> {
   const params = new URLSearchParams({
     query,
-    page: String(page),
-    per_page: String(limit),
+    page: page.toString(),
+    per_page: limit.toString(),
   });
 
-  const data = await handleAxios<UnsplashSearchResponse>(
-    api.get(`/search/photos?${params.toString()}`)
+  const data = await handleAxios(
+    api.get<UnsplashSearchResponse>(`/search/photos?${params.toString()}`)
   );
 
   return {
@@ -89,5 +79,5 @@ export async function searchImages(
 export async function fetchPhotoDetails(
   id: string
 ): Promise<UnsplashImageDetails> {
-  return handleAxios(api.get(`/photos/${id}`));
+  return handleAxios(api.get<UnsplashImageDetails>(`/photos/${id}`));
 }

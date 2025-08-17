@@ -41,7 +41,7 @@
   "DetailsHeader": {
     "Title": "Image Details"
   },
-  "DetailsSlot": {
+  "ImageDetails": {
     "Author": "Author",
     "Likes": "Likes",
     "Description": "Description"

@@ -41,7 +41,7 @@
   "DetailsHeader": {
     "Title": "Подробно об изображения"
   },
-  "DetailsSlot": {
+  "ImageDetails": {
     "Author": "Автор",
     "Likes": "Лайки",
     "Description": "Описание"

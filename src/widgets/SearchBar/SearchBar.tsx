@@ -1,25 +1,20 @@
 'use client';
 
 import { ChangeEvent, KeyboardEvent } from 'react';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useTranslations } from 'next-intl';
 
 import { AppButton } from '@/shared/ui/';
+import { useAppStore, selectSearch } from '@/app/store/appStore';
 
-interface Props {
-  onSearch: (term: string) => void;
-  initialValue?: string;
-}
-
-export const SearchBar = ({ onSearch, initialValue = '' }: Props) => {
+export const SearchBar = () => {
   const t = useTranslations('SearchBar');
-  const [term, setTerm, removeTerm] = useLocalStorage(
-    'searchTerm',
-    initialValue
-  );
+
+  const term = useAppStore(selectSearch);
+  const setSearch = useAppStore((s) => s.setSearchTerm);
+  const resetStore = useAppStore((s) => s.reset);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTerm(e.target.value);
+    setSearch(e.target.value);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -30,19 +25,15 @@ export const SearchBar = ({ onSearch, initialValue = '' }: Props) => {
 
   const handleSearch = () => {
     const trimmed = term.trim();
-
     if (trimmed) {
-      setTerm(trimmed);
-      onSearch(trimmed);
+      setSearch(trimmed);
     } else {
       handleReset();
     }
   };
 
   const handleReset = () => {
-    removeTerm();
-    setTerm('');
-    onSearch('');
+    resetStore();
   };
 
   return (

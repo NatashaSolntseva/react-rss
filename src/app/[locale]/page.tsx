@@ -1,5 +1,7 @@
-import { redirect } from 'next/navigation';
+import { fetchLatestImages } from '@/server/unsplash';
+import { MainPageClient } from './MainPageClient';
 
-export default function IndexRedirect() {
-  redirect('/1');
+export default async function MainPage() {
+  const initialCardsData = await fetchLatestImages();
+  return <MainPageClient initialCardData={initialCardsData} />;
 }
