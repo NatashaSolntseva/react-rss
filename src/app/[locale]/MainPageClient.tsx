@@ -18,14 +18,12 @@ export function MainPageClient({
 }) {
   const imageId = useSearchParams().get('imageId');
 
-  console.log(' initialCardData', initialCardData);
-
   return (
     <div className="flex-grow">
       <SearchBar />
       <div className="flex min-h-[400px] flex-col items-stretch gap-6 transition-all md:flex-row">
         <div className={`${imageId ? 'md:w-2/3' : 'w-full'} h-full`}>
-          <CardList />
+          <CardList initialCardData={initialCardData} />
         </div>
 
         {imageId && (

@@ -9,9 +9,15 @@ import { selectPage, selectSearch, useAppStore } from '@/app/store/appStore';
 import { useLatestImage } from '@/hooks/useLatestImages';
 import { useSearchImages } from '@/hooks/useSearchImages';
 
+import { CardItem } from '@/server/types';
+
 import { IMAGES_PER_PAGE } from '@/server/constants';
 
-export const CardList = () => {
+export const CardList = ({
+  initialCardData,
+}: {
+  initialCardData?: CardItem[];
+}) => {
   const t = useTranslations('CardList');
   const router = useRouter();
 
@@ -19,7 +25,12 @@ export const CardList = () => {
   const searchTerm = useAppStore(selectSearch);
   const isSearch = !!searchTerm;
 
-  const { data: latestData } = useLatestImage(page, IMAGES_PER_PAGE, !isSearch);
+  const { data: latestData } = useLatestImage(
+    page,
+    IMAGES_PER_PAGE,
+    !isSearch,
+    initialCardData
+  );
   const { data: searchData } = useSearchImages(searchTerm, page);
   const images = isSearch ? (searchData?.results ?? []) : (latestData ?? []);
 
