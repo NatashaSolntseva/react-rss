@@ -1,19 +1,32 @@
 'use client';
 
-import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
+
+import { useAppStore, selectSearch } from '@/app/store/appStore';
 
 import { AppButton } from '@/shared/ui/';
-import { useAppStore, selectSearch } from '@/app/store/appStore';
 
 export const SearchBar = () => {
   const t = useTranslations('SearchBar');
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const term = useAppStore(selectSearch);
+
   const setSearch = useAppStore((s) => s.setSearchTerm);
+  const setPage = useAppStore((s) => s.setPage);
   const resetStore = useAppStore((s) => s.reset);
 
   const [inputValue, setInputValue] = useState(term);
+
+  useEffect(() => {
+    setInputValue(term);
+  }, [term]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -26,18 +39,34 @@ export const SearchBar = () => {
   };
 
   const handleSearch = () => {
-    console.log('HS');
     const trimmed = inputValue.trim();
+
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', '1');
+
     if (trimmed) {
+      params.set('q', trimmed);
+      params.get('imageId');
       setSearch(trimmed);
+      setPage(1);
     } else {
-      handleReset();
+      params.delete('q');
+      params.delete('imageId');
+      setPage(1);
+      setSearch('');
     }
+
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleReset = () => {
     setInputValue('');
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('q');
+    params.set('page', '1');
     resetStore();
+    setPage(1);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
