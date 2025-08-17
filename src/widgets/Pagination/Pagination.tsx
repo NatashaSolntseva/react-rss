@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 
@@ -11,12 +12,17 @@ import {
 } from '@/app/store/appStore';
 import { AppButton } from '@/shared/ui';
 import { DEFAULT_PAGE } from '@/server/constants';
+import { useSearchParams } from 'next/navigation';
 
 export const Pagination = () => {
   const t = useTranslations('Pagination');
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams.toString());
+
   const page = useAppStore(selectPage);
+  console.log('page', page);
   const search = useAppStore(selectSearch);
   const totalPages = useAppStore(selectTotalPages);
   const setPage = useAppStore((s) => s.setPage);
@@ -29,11 +35,21 @@ export const Pagination = () => {
     return q ? `?page=${page}?q=${encodeURIComponent(q)}` : `?page=${page}`;
   };
 
-  const goTo = (p: number) => {
-    if (p < 1) return;
-    setPage(p);
-    router.push(buildHref(p));
+  const goTo = (newPage: number) => {
+    if (newPage < 1) return;
+    params.set('page', String(newPage));
+    setPage(newPage);
+    router.push(buildHref(newPage));
   };
+
+  useEffect(() => {
+    if (searchParams) {
+      const urlPage = searchParams.get('page');
+      if (urlPage) {
+        setPage(Number(urlPage));
+      }
+    }
+  }, [searchParams, setPage]);
 
   return (
     <div className="mt-8 flex items-center justify-center gap-4">
