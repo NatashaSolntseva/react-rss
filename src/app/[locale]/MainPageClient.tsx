@@ -1,11 +1,15 @@
 'use client';
 
-import { CardItem } from '@/server/types';
-import { CardList, Flyout, SearchBar } from '@/widgets';
-
-import { Pagination } from '@/widgets/';
-import { ImageDetails } from '@/widgets/ImageDetails/ImageDetails';
 import { useSearchParams } from 'next/navigation';
+
+import { CardItem } from '@/server/types';
+import {
+  CardList,
+  Flyout,
+  SearchBar,
+  Pagination,
+  ImageDetails,
+} from '@/widgets';
 
 export function MainPageClient({
   initialCardData,

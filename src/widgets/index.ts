@@ -4,3 +4,4 @@ export { Footer } from './Footer/Footer';
 export { Header } from './Header/Header';
 export { SearchBar } from './SearchBar/SearchBar';
 export { Pagination } from './Pagination/Pagination';
+export { ImageDetails } from './ImageDetails/ImageDetails';
