@@ -1,12 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from '@/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { AppButton } from '@/shared/ui/AppButton/AppButton';
 
 export default function About() {
-  const router = useRouter();
   const t = useTranslations('About');
 
   return (
@@ -59,8 +56,6 @@ export default function About() {
           ),
         })}
       </p>
-
-      <AppButton text={t('BackButton')} onClick={() => router.back()} />
     </div>
   );
 }
