@@ -31,7 +31,8 @@
     "Of": "of"
   },
   "CardList": {
-    "PhotoBy": "Photo by"
+    "PhotoBy": "Photo by",
+    "Refetch": "Refresh"
   },
   "SearchBar": {
     "Placeholder": "Search for images...",
@@ -44,6 +45,12 @@
   "ImageDetails": {
     "Author": "Author",
     "Likes": "Likes",
-    "Description": "Description"
+    "Description": "Description",
+    "Refetch": "Refresh"
+  },
+  "Flyout": {
+    "Download": "Download",
+    "UnSelect": "Unselect all",
+    "Selected": "{count, plural, =0 {No items selected} one {# item selected} other {# items selected}}"
   }
 }

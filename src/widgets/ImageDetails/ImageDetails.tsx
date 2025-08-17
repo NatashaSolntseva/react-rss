@@ -3,7 +3,7 @@
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 
-import { HeaderWithCloseBtn } from '@/shared/ui';
+import { AppButton, HeaderWithCloseBtn } from '@/shared/ui';
 import { useImageDetails } from './model/useImageDetails';
 import { useTranslations } from 'next-intl';
 
@@ -17,7 +17,7 @@ export const ImageDetails = ({ id }: ImageDetailsProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const { data: details, isFetching, error } = useImageDetails(id);
+  const { data: details, isFetching, error, refetch } = useImageDetails(id);
 
   const handleClose = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -76,11 +76,11 @@ export const ImageDetails = ({ id }: ImageDetailsProps) => {
             </p>
           )}
 
-          {/* <AppButton
-            text="Refresh"
+          <AppButton
+            text={t('Refetch')}
             onClick={() => refetch()}
             className="mt-3"
-          /> */}
+          />
         </div>
       )}
     </aside>

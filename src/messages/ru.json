@@ -31,7 +31,8 @@
     "Of": "из"
   },
   "CardList": {
-    "PhotoBy": "Фото от"
+    "PhotoBy": "Фото от",
+    "Refetch": "Обновить"
   },
   "SearchBar": {
     "Placeholder": "Поиск изображений...",
@@ -44,6 +45,12 @@
   "ImageDetails": {
     "Author": "Автор",
     "Likes": "Лайки",
-    "Description": "Описание"
+    "Description": "Описание",
+    "Refetch": "Обновить"
+  },
+  "Flyout": {
+    "Download": "Скачать",
+    "UnSelect": "Снять выделение",
+    "Selected": "{count, plural, =0 {Ничего не выбрано} one {Выбран # элемент} few {Выбрано # элемента} many {Выбрано # элементов} other {Выбрано # элемента}}"
   }
 }

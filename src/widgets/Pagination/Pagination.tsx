@@ -76,7 +76,6 @@ export const Pagination = () => {
         onClick={() => goTo(page + 1)}
         disabled={isNext}
       />
-      {/* <AppButton text="Refresh" onClick={handleRefresh} /> */}
     </div>
   );
 };

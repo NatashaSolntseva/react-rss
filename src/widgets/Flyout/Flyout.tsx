@@ -1,12 +1,17 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
+
 import { useSelectionStore } from '@/app/store/selectionStore';
 import type { CardItem } from '@/server/types';
 import { compileCsvOnServer } from '@/server/actions/compilecsv';
-import { AppButton } from '@/shared/ui/AppButton/AppButton';
+
+import { AppButton } from '@/shared/ui/';
 
 export const Flyout = () => {
+  const t = useTranslations('Flyout');
+
   const selectedIds = useSelectionStore((s) => s.selectedIds);
   const selectedItemsMap = useSelectionStore((s) => s.selectedItemsMap);
   const clearSelection = useSelectionStore((s) => s.clearSelection);
@@ -52,15 +57,15 @@ export const Flyout = () => {
   return (
     <div className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded border border-gray-300 bg-white px-6 py-3 text-black shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:text-white">
       <span className="text-sm">
-        {selectedIds.length} item{selectedIds.length > 1 ? 's' : ''} selected
+        {t('Selected', { count: selectedIds.length })}
       </span>
       <AppButton
-        text="Unselect all"
+        text={t('UnSelect')}
         onClick={clearSelection}
         disabled={isDownloading}
       />
       <AppButton
-        text="Download"
+        text={t('Download')}
         onClick={handleDownload}
         disabled={isDownloading}
       />
