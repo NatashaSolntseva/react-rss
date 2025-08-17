@@ -1,6 +1,10 @@
-import { fetchLatestImages, fetchPhotoDetails, searchImages } from '@/api/api';
-import { IMAGES_PER_PAGE } from '@/api/constants';
-import { CardItem } from '@/api/types';
+import {
+  fetchLatestImages,
+  fetchPhotoDetails,
+  searchImages,
+} from '@/server/unsplash';
+import { IMAGES_PER_PAGE } from '@/server/constants';
+import { CardItem } from '@/server/types';
 
 const cardImagesQueryKey = 'cardImages';
 const imageDetailsQueryKey = 'cardImageDetails';
