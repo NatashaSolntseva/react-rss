@@ -1,15 +1,17 @@
+'use server';
+
 import { formatDate } from '@/shared/utils/formatDate';
-import { CardItem } from '@/server/types';
+import type { CardItem } from '@/server/types';
 
 function formatCsvCell(cell: string | number | null): string {
-  const str = String(cell);
+  const str = String(cell ?? '');
   if (str.includes(',') || str.includes(' ') || str.includes('\n')) {
     return `"${str.replace(/"/g, '""')}"`;
   }
   return str;
 }
 
-export const downloadCsv = (items: CardItem[]) => {
+export async function compileCsvOnServer(items: CardItem[]) {
   const headers = [
     '"N0"',
     '"ID"',
@@ -39,15 +41,7 @@ export const downloadCsv = (items: CardItem[]) => {
     ),
   ].join('\n');
 
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  const filename = `${items.length}_items.csv`;
-
-  link.setAttribute('href', URL.createObjectURL(blob));
-  link.setAttribute('download', filename);
-  link.style.display = 'none';
-
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+  return new File([csvContent], `${items.length}_items.csv`, {
+    type: 'text/csv;charset=utf-8',
+  });
+}

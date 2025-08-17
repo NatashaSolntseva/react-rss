@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { useSelectionStore } from '@/app/store/selectionStore';
 
-import { downloadCsv } from '@/shared/utils/downloadCsv';
 import { AppButton } from '@/shared/ui/AppButton/AppButton';
 import { CardItem } from '@/server/types';
+import { compileCsvOnServer } from '@/server/actions/compilecsv';
 
 export const Flyout = () => {
   const selectedIds = useSelectionStore((state) => state.selectedIds);
@@ -18,8 +18,20 @@ export const Flyout = () => {
     [selectedIds, selectedItemsMap]
   );
 
-  const handleDownload = () => {
-    downloadCsv(selectedItems);
+  const handleDownload = async () => {
+    try {
+      const file = await compileCsvOnServer(selectedItems);
+      const url = URL.createObjectURL(file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error('CSV download failed:', e);
+    }
   };
 
   if (selectedIds.length === 0) return null;
