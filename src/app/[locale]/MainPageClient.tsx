@@ -27,7 +27,7 @@ export function MainPageClient({
         </div>
 
         {imageId && (
-          <div className="h-full w-full md:w-1/3">
+          <div className="mt-13 h-full w-full md:w-1/3">
             <ImageDetails id={imageId} />
           </div>
         )}

@@ -23,6 +23,7 @@ export const CardList = ({
   const router = useRouter();
 
   const page = useAppStore(selectPage);
+
   const searchTerm = useAppStore(selectSearch);
   const isSearch = !!searchTerm;
 
@@ -75,6 +76,8 @@ export const CardList = ({
                 alt={item.alt_description || 'Image'}
                 className="w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                loading="lazy"
               />
             </div>
 

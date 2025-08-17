@@ -47,15 +47,20 @@ export const Pagination = () => {
   useEffect(() => {
     if (!searchParams) return;
 
-    const urlPage = searchParams.get('page');
+    const raw = searchParams.get('page');
 
-    if (urlPage) {
-      setPage(Number(urlPage));
-    } else {
-      setPage(Number(DEFAULT_PAGE));
-      params.set('page', String(DEFAULT_PAGE));
-      router.replace(`?${params.toString()}`);
+    const valid =
+      raw && /^\d+$/.test(raw)
+        ? Math.max(1, parseInt(raw, 10))
+        : Number(DEFAULT_PAGE);
+
+    if (String(valid) !== (raw ?? '')) {
+      const p = new URLSearchParams(searchParams.toString());
+      p.set('page', String(valid));
+      router.replace(`?${p.toString()}`, { scroll: false });
     }
+
+    setPage(valid);
   }, [searchParams, setPage, router]);
 
   return (
