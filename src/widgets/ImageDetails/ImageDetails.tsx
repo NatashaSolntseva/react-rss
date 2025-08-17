@@ -33,20 +33,14 @@ export const ImageDetails = ({ id }: ImageDetailsProps) => {
     <aside className="overflow-hidden rounded bg-white p-4 shadow dark:bg-gray-800">
       {!isFetching && error && (
         <div>
-          <HeaderWithCloseBtn
-            headerText="Image Details"
-            onClose={handleClose}
-          />
+          <HeaderWithCloseBtn onClose={handleClose} />
           <p className="font-medium text-red-600">{error.message}</p>
         </div>
       )}
 
       {!isFetching && details && (
         <div>
-          <HeaderWithCloseBtn
-            headerText="Image Details"
-            onClose={handleClose}
-          />
+          <HeaderWithCloseBtn onClose={handleClose} />
 
           <Link
             href={details.urls.full}

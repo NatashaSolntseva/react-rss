@@ -1,13 +1,16 @@
+import { useTranslations } from 'next-intl';
+
 interface Props {
   onClose: () => void;
-  headerText: string;
 }
 
-export const HeaderWithCloseBtn = ({ onClose, headerText }: Props) => {
+export const HeaderWithCloseBtn = ({ onClose }: Props) => {
+  const t = useTranslations('DetailsHeader');
+
   return (
     <div className="mb-4 flex items-center justify-between">
       <h2 className="text-lg font-bold text-slate-600 dark:text-gray-100">
-        {headerText}
+        {t('Title')}
       </h2>
       <button
         onClick={onClose}
