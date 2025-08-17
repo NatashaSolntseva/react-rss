@@ -1,14 +1,17 @@
-import { useMemo } from 'react';
-import { useSelectionStore } from '@/app/store/selectionStore';
+'use client';
 
-import { AppButton } from '@/shared/ui/AppButton/AppButton';
-import { CardItem } from '@/server/types';
+import { useMemo, useState } from 'react';
+import { useSelectionStore } from '@/app/store/selectionStore';
+import type { CardItem } from '@/server/types';
 import { compileCsvOnServer } from '@/server/actions/compilecsv';
+import { AppButton } from '@/shared/ui/AppButton/AppButton';
 
 export const Flyout = () => {
-  const selectedIds = useSelectionStore((state) => state.selectedIds);
-  const selectedItemsMap = useSelectionStore((state) => state.selectedItemsMap);
-  const clearSelection = useSelectionStore((state) => state.clearSelection);
+  const selectedIds = useSelectionStore((s) => s.selectedIds);
+  const selectedItemsMap = useSelectionStore((s) => s.selectedItemsMap);
+  const clearSelection = useSelectionStore((s) => s.clearSelection);
+
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const selectedItems: CardItem[] = useMemo(
     () =>
@@ -20,17 +23,27 @@ export const Flyout = () => {
 
   const handleDownload = async () => {
     try {
-      const file = await compileCsvOnServer(selectedItems);
-      const url = URL.createObjectURL(file);
+      setIsDownloading(true);
+
+      const csvString = await compileCsvOnServer(selectedItems);
+      const filename = `${selectedItems.length}_items.csv`;
+
+      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+
       const a = document.createElement('a');
       a.href = url;
-      a.download = file.name;
+      a.download = filename;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+
+      clearSelection();
     } catch (e) {
       console.error('CSV download failed:', e);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -41,8 +54,16 @@ export const Flyout = () => {
       <span className="text-sm">
         {selectedIds.length} item{selectedIds.length > 1 ? 's' : ''} selected
       </span>
-      <AppButton text="Unselect all" onClick={clearSelection} />
-      <AppButton text=" Download" onClick={handleDownload} />
+      <AppButton
+        text="Unselect all"
+        onClick={clearSelection}
+        disabled={isDownloading}
+      />
+      <AppButton
+        text="Download"
+        onClick={handleDownload}
+        disabled={isDownloading}
+      />
     </div>
   );
 };

@@ -41,7 +41,5 @@ export async function compileCsvOnServer(items: CardItem[]) {
     ),
   ].join('\n');
 
-  return new File([csvContent], `${items.length}_items.csv`, {
-    type: 'text/csv;charset=utf-8',
-  });
+  return csvContent;
 }
